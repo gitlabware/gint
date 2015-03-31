@@ -1,0 +1,1 @@
+$('#listadatatable').dataTable();

@@ -1,0 +1,2 @@
+iniventana();
+editar();

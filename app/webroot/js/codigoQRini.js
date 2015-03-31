@@ -1,0 +1,1 @@
+jQuery(divSelector).qrcode(opcionesQRejmeplar);   

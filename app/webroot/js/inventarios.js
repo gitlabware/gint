@@ -1,0 +1,1 @@
+$('#idselectinsumos').select2();
