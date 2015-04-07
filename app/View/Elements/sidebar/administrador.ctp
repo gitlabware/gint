@@ -64,22 +64,22 @@ $categorias = $categoria->find('all');
                 <ul id="side-insumos" class="submenu collapse ">
                     <li class="submenu-header ellipsis">Insumos</li>
                     <?php foreach ($categorias as $ca): ?>
-                        <li >
-                            <a href="javascript:void(0);" data-toggle="submenu" data-target="#sub-side-categorias-<?php echo $ca['Categoria']['id']; ?>" data-parent="#page">
-                                <span class="text"><?php echo $ca['Categoria']['nombre'] ?></span>
-                                <span class="arrow"></span>
-                            </a>
-                            <!-- START 2nd Level Menu -->
-                            <ul id="sub-side-categorias-<?php echo $ca['Categoria']['id']; ?>" class="submenu collapse ">
-                                <li >
-                                    <a href="<?php echo $this->Html->url(array('controller' => 'Insumos', 'action' => 'index', $ca['Categoria']['id'])); ?>"><span class="text">Listado de <?php echo $ca['Categoria']['nombre'] ?></span></a>
-                                </li>
-                                <li >
-                                    <a href="javascript:"  onclick="cargarmodal('<?php echo $this->Html->url(array('controller' => 'Insumos', 'action' => 'insumo', $ca['Categoria']['id'])); ?>');"><span class="text">Adicionar</span></a>
-                                </li>
-                            </ul>
-                            <!--/ END 2nd Level Menu -->
-                        </li>
+                      <li >
+                          <a href="javascript:void(0);" data-toggle="submenu" data-target="#sub-side-categorias-<?php echo $ca['Categoria']['id']; ?>" data-parent="#page">
+                              <span class="text"><?php echo $ca['Categoria']['nombre'] ?></span>
+                              <span class="arrow"></span>
+                          </a>
+                          <!-- START 2nd Level Menu -->
+                          <ul id="sub-side-categorias-<?php echo $ca['Categoria']['id']; ?>" class="submenu collapse ">
+                              <li >
+                                  <a href="<?php echo $this->Html->url(array('controller' => 'Insumos', 'action' => 'index', $ca['Categoria']['id'])); ?>"><span class="text">Listado de <?php echo $ca['Categoria']['nombre'] ?></span></a>
+                              </li>
+                              <li >
+                                  <a href="javascript:"  onclick="cargarmodal('<?php echo $this->Html->url(array('controller' => 'Insumos', 'action' => 'insumo', $ca['Categoria']['id'])); ?>');"><span class="text">Adicionar</span></a>
+                              </li>
+                          </ul>
+                          <!--/ END 2nd Level Menu -->
+                      </li>
                     <?php endforeach; ?>
                 </ul>
                 <!--/ END 2nd Level Menu -->
@@ -280,7 +280,12 @@ $categorias = $categoria->find('all');
                     <span class="figure"><i class="ico-list"></i></span>
                     <span class="text">Facturas</span>
                 </a>
-
+            </li>
+            <li>
+                <a href="<?php echo $this->Html->url(array('controller' => 'Reportes', 'action' => 'index')); ?>"  data-parent=".topmenu">
+                    <span class="figure"><i class="ico-calendar6"></i></span>
+                    <span class="text">Reportes</span>
+                </a>
             </li>
 
         </ul>
