@@ -74,10 +74,10 @@
         <div class="panel panel-primary" align="center">
             <table class="CSSTableGenerator">
                 <tr>
-                    <td><h4 class="text-danger">NOTA DE ENTREGA #<?php echo $nota['Nota']['numero'] ?></h4></td>
+                    <td><h4 class="text-danger"><?php echo strtoupper($tipo); ?> #<?php echo $nota['Nota']['numero'] ?></h4></td>
                     <td>
                         <h4 class="text-info">Fecha y Hora: 
-                            <?php echo $nota['Nota']['created']?>
+                            <?php echo $nota['Nota']['created'] ?>
                         </h4>
                     </td>
                 </tr>
@@ -92,7 +92,7 @@
                     <td><?php echo $trabajo['Cliente']['telefono'] . ' ' . $trabajo['Cliente']['celular']; ?></td>
                 </tr>
             </table>
-            <span class="text-success" style="font-weight: bold; font-size: 19px; margin-top: 4px; margin-bottom: 4px;" >DETALLE DE ENTREGA</span>
+            <span class="text-success" style="font-weight: bold; font-size: 19px; margin-top: 4px; margin-bottom: 4px;" >DETALLE DE <?php echo strtoupper($tipo); ?></span>
             <table class="CSSTableGenerator">
                 <tr>
                     <td>Cantidad</td>
@@ -102,46 +102,40 @@
                 </tr>
                 <?php $total = 0.00; ?>
                 <?php foreach ($hproducciones as $pro): ?>
-                    <tr>
-                        <td><?php echo $pro['Hojasproduccione']['cantidad']; ?></td>
-                        <td>
-                            <?php
-                            if (!empty($pro['Hojasproduccione']['metrajeini']) && !empty($pro['Hojasproduccione']['metrajefin'])) {
-                                echo $pro['Hojasproduccione']['metrajeini'] . ' X ' . $pro['Hojasproduccione']['metrajefin'];
-                            } elseif ($pro['Hojasproduccione']['precio'] == 3) {
-                                echo 'Carta';
-                            } elseif ($pro['Hojasproduccione']['precio'] == 4) {
-                                echo 'Oficio';
-                            }
-                            ?>
-                        </td>
-                        <td><?php echo $pro['Hojasproduccione']['descripcion']; ?></td>
-                        <td><?php echo $pro['Hojasproduccione']['costo']; ?></td>
-                    </tr>
-                    <?php $total = $total + $pro['Hojasproduccione']['costo']; ?>
+                  <tr>
+                      <td><?php echo $pro['Hojasproduccione']['cantidad']; ?></td>
+                      <td>
+                          <?php
+                          if (!empty($pro['Hojasproduccione']['metrajeini']) && !empty($pro['Hojasproduccione']['metrajefin'])) {
+                            echo $pro['Hojasproduccione']['metrajeini'] . ' X ' . $pro['Hojasproduccione']['metrajefin'];
+                          } elseif ($pro['Hojasproduccione']['precio'] == 3) {
+                            echo 'Carta';
+                          } elseif ($pro['Hojasproduccione']['precio'] == 4) {
+                            echo 'Oficio';
+                          }
+                          ?>
+                      </td>
+                      <td><?php echo $pro['Hojasproduccione']['descripcion']; ?></td>
+                      <td><?php echo $pro['Hojasproduccione']['costo']; ?></td>
+                  </tr>
+                  <?php $total = $total + $pro['Hojasproduccione']['costo']; ?>
                 <?php endforeach; ?>
                 <tr>
                     <td class="text-danger">Forma pago: </td>
-                    <td><?php echo $nota['Nota']['tipo_pago'];?></td>
+                    <td><?php echo $nota['Nota']['tipo_pago']; ?></td>
                     <td class="text-danger">TOTAL: </td>
                     <td><?php echo $total; ?></td>
-                </tr>
-                <tr>
-                    <td class="text-danger">Saldo: </td>
-                    <td><?php echo $nota['Nota']['saldo'];?></td>
-                    <td class="text-danger">Total pagado: </td>
-                    <td><?php echo $nota['Nota']['total_pagado'];?></td>
                 </tr>
             </table>
             <table class="CSSTableGenerator" style="margin-top:-1px;">
                 <tr>
                     <td class="text-danger">Entregado por: </td>
                     <td>
-                        <?php echo $nota['User']['nombre']?>
+                        <?php echo $nota['User']['nombre'] ?>
                     </td>
                     <td class="text-danger">Sucursal:</td>
                     <td>
-                        <?php echo $nota['Sucursale']['nombre']?>
+                        <?php echo $nota['Sucursale']['nombre'] ?>
                     </td>
                 </tr>
             </table>
@@ -160,7 +154,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="panel-body">
-                        <button type="button" onclick="window.location = '<?php echo $this->Html->url(array('action' => 'nota',$trabajo['Trabajo']['id'],$nota['Nota']['tipo']));?>';" class="btn btn-success col-md-12"> <i class="ico-pencil3"> </i> EDITAR</button>
+                        <button type="button" onclick="window.location = '<?php echo $this->Html->url(array('action' => 'nota', $trabajo['Trabajo']['id'], $nota['Nota']['tipo'])); ?>';" class="btn btn-success col-md-12"> <i class="ico-pencil3"> </i> EDITAR</button>
                     </div>
                 </div>
             </div>
