@@ -75,7 +75,7 @@
             <table class="CSSTableGenerator">
                 <tr>
                     <td class="text-center">
-                        <h4 class="text-info">REPORTE POR TIPO DE TRABAJOS</h4>
+                        <h4 class="text-info">REPORTE POR CLIENTES</h4>
                     </td>
                 </tr>
             </table>
@@ -83,9 +83,9 @@
                 <tr>
                     <td class="text-success">REPORTE ENTRE FECHAS : <?php echo $fecha1 . 'A ' . $fecha2; ?></td>
                     <td class="text-success">
-                        TRABAJO: <?php
-                        if (!empty($tipotrabajo)) {
-                          echo $tipotrabajo['Tipotrabajo']['descripcion'];
+                        CLIENTE: <?php
+                        if (!empty($cliente)) {
+                          echo $cliente['Cliente']['nombre'];
                         } else {
                           echo 'Todos';
                         }

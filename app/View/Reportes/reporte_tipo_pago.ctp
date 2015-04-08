@@ -75,7 +75,7 @@
             <table class="CSSTableGenerator">
                 <tr>
                     <td class="text-center">
-                        <h4 class="text-info">REPORTE POR TIPO DE TRABAJOS</h4>
+                        <h4 class="text-info">REPORTE POR PAGOS</h4>
                     </td>
                 </tr>
             </table>
@@ -83,13 +83,7 @@
                 <tr>
                     <td class="text-success">REPORTE ENTRE FECHAS : <?php echo $fecha1 . 'A ' . $fecha2; ?></td>
                     <td class="text-success">
-                        TRABAJO: <?php
-                        if (!empty($tipotrabajo)) {
-                          echo $tipotrabajo['Tipotrabajo']['descripcion'];
-                        } else {
-                          echo 'Todos';
-                        }
-                        ?>
+                        TIPO PAGO: <?php echo $tipopago;?>
                     </td>
                     <td class="text-success">
                         SUCURSAL: <?php
