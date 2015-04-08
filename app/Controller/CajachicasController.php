@@ -15,6 +15,7 @@ class CajachicasController extends AppController {
  */
 	public $components = array('Paginator');
   public $layout = 'general';
+  public $uses = array('Cajachica', 'Categoriasmonto');
 
 /**
  * index method
@@ -61,7 +62,10 @@ class CajachicasController extends AppController {
 	}
   
   public function nuevo(){
-    
+    $categorias = $this->Categoriasmonto->find('all', array(
+      'recursive'=>-1      
+    ));
+    $this->set(compact('categorias'));
   }
 
   /**

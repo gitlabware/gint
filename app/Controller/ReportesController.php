@@ -29,7 +29,7 @@ class ReportesController extends AppController {
     $tipofecha = $this->data['Hojasproduccione']['tipo_fecha'];
     $condiciones = array();
     if (!empty($sucursal_id) && $sucursal_id != 'Todos') {
-      $condiciones['Hojasproduccione.sucursal_id'] = $sucursal_id;
+      $condiciones['Hojasproduccione.sucursale_id'] = $sucursal_id;
     }
     if (!empty($tipotrabajo_id) && $tipotrabajo_id != 'Todos') {
       $condiciones['Hojasproduccione.tipotrabajo_id'] = $tipotrabajo_id;
