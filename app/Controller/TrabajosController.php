@@ -66,8 +66,11 @@ class TrabajosController extends AppController {
   }
 
   public function registra_trabajo() {
-    /* debug($this->request->data);
-      exit; */
+    if (!empty($this->request->data['Cliente']['nombre'])) {
+      $this->Cliente->create();
+      $this->Cliente->save($this->request->data['Cliente']);
+      $this->request->data['Trabajo']['cliente_id'] = $this->Cliente->getLastInsertID();
+    }
     $this->Trabajo->create();
     if ($this->Trabajo->save($this->request->data['Trabajo'])) {
       if (!empty($this->request->data['Trabajo']['id'])) {
@@ -239,7 +242,7 @@ class TrabajosController extends AppController {
     if (!empty($this->request->data['Hojasproduccione'])) {
       $this->Hojasproduccione->saveMany($this->request->data['Hojasproduccione']);
       if (!empty($idTrabajo)) {
-        $nota = $this->Nota->find('first', array('recursive' => -1,'order' => 'Nota.id DESC'
+        $nota = $this->Nota->find('first', array('recursive' => -1, 'order' => 'Nota.id DESC'
           , 'fields' => array('Nota.id', 'Nota.tipo')
           , 'conditions' => array('Nota.trabajo_id' => $idTrabajo)));
         if (!empty($nota)) {
@@ -311,4 +314,32 @@ class TrabajosController extends AppController {
     $this->set(compact('trabajo', 'nota', 'hproducciones', 'tipo'));
   }
 
+  //----------- MODULO DE SELECTOR AJAX CLIENTES ------------
+  public function comboclientes1($campoform = null, $div = null) {
+    $this->layout = 'ajax';
+    //debug($campoform);exit;
+    $this->set(compact('campoform', 'div'));
+  }
+
+  public function comboclientes2($campoform = null, $div = null) {
+    $this->layout = 'ajax';
+    //debug($this->request->data);exit;
+    if (!empty($this->request->data['Cliente']['nombre'])) {
+      $listaclientes = $this->Cliente->find('all', array('recursive' => -1,
+        'conditions' =>
+        array('Cliente.nombre LIKE' => '%' . $this->request->data['Cliente']['nombre'] . "%"),
+        'limit' => 8,
+        'order' => 'Cliente.nombre ASC'
+      ));
+    }
+    $this->set(compact('listaclientes', 'div', 'campoform'));
+  }
+
+  public function comboclientes3($campoform = null, $div = null, $idCliente = null) {
+    $this->layout = 'ajax';
+    $scliente = $this->Cliente->findByid($idCliente, null, null, -1);
+    $this->set(compact('campoform', 'scliente', 'div'));
+  }
+
+  //-------------- TERMINA SELECTOR CLIENTE--------------------
 }
