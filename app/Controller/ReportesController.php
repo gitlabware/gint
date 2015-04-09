@@ -4,7 +4,7 @@ App::uses('AppController', 'Controller');
 
 class ReportesController extends AppController {
 
-  public $uses = array('Trabajo', 'Tipotrabajo', 'Sucursale', 'Hojasproduccione', 'Cliente');
+  public $uses = array('Trabajo', 'Tipotrabajo', 'Sucursale', 'Hojasproduccione', 'Cliente','Nota');
   public $layout = 'general';
 
   public function index() {
@@ -38,7 +38,7 @@ class ReportesController extends AppController {
       $condiciones["$tipofecha BETWEEN ? AND ? "] = array($fecha1, $fecha2);
     }
     $sql1 = "(case when (tipo = 'Nota de entrega') THEN (CONCAT('NE ',id)) ELSE (CONCAT('NR ',id)) END) as orden";
-    $sql2 = "SELECT $sql1 FROM `notas` WHERE (notas.trabajo_id = Hojasproduccione.trabajo_id)";
+    $sql2 = "SELECT $sql1 FROM `notas` WHERE (notas.trabajo_id = Hojasproduccione.trabajo_id AND notas.estado != 'Eliminado') ORDER BY id DESC";
     $sql3 = "SELECT nombre FROM `clientes` WHERE (clientes.id = Trabajo.cliente_id)";
     $sql4 = "SELECT descripcion FROM `tipotrabajos` WHERE (tipotrabajos.id = Hojastipostrabajo.tipotrabajo_id)";
     $this->Hojasproduccione->virtualFields = array(
@@ -72,7 +72,7 @@ class ReportesController extends AppController {
     $tipofecha = $this->data['Hojasproduccione']['tipo_fecha'];
     $condiciones = array();
     if (!empty($sucursal_id) && $sucursal_id != 'Todos') {
-      $condiciones['Hojasproduccione.sucursal_id'] = $sucursal_id;
+      $condiciones['Hojasproduccione.sucursale_id'] = $sucursal_id;
     }
     if (!empty($cliente_id) && $cliente_id != 'Todos') {
       $condiciones['Trabajo.cliente_id'] = $cliente_id;
@@ -81,7 +81,7 @@ class ReportesController extends AppController {
       $condiciones["$tipofecha BETWEEN ? AND ? "] = array($fecha1, $fecha2);
     }
     $sql1 = "(case when (tipo = 'Nota de entrega') THEN (CONCAT('NE ',id)) ELSE (CONCAT('NR ',id)) END) as orden";
-    $sql2 = "SELECT $sql1 FROM `notas` WHERE (notas.trabajo_id = Hojasproduccione.trabajo_id)";
+    $sql2 = "SELECT $sql1 FROM `notas` WHERE (notas.trabajo_id = Hojasproduccione.trabajo_id AND notas.estado != 'Eliminado') ORDER BY id DESC";
     $sql3 = "SELECT nombre FROM `clientes` WHERE (clientes.id = Trabajo.cliente_id)";
     $sql4 = "SELECT descripcion FROM `tipotrabajos` WHERE (tipotrabajos.id = Hojastipostrabajo.tipotrabajo_id)";
     $this->Hojasproduccione->virtualFields = array(
@@ -100,8 +100,9 @@ class ReportesController extends AppController {
     );
     /* debug($resultados);
       exit; */
-    $this->set(compact('tipotrabajo', 'sucursal', 'resultados', 'fecha1', 'fecha2','cliente'));
+    $this->set(compact('tipotrabajo', 'sucursal', 'resultados', 'fecha1', 'fecha2', 'cliente'));
   }
+
   public function reporte_tipo_entrega() {
 
     $tipoentrega = $this->data['Hojasproduccione']['tiponota'];
@@ -113,7 +114,7 @@ class ReportesController extends AppController {
     $tipofecha = $this->data['Hojasproduccione']['tipo_fecha'];
     $condiciones = array();
     if (!empty($sucursal_id) && $sucursal_id != 'Todos') {
-      $condiciones['Hojasproduccione.sucursal_id'] = $sucursal_id;
+      $condiciones['Hojasproduccione.sucursale_id'] = $sucursal_id;
     }
     if (!empty($tipoentrega) && $tipoentrega != 'Todos') {
       $condiciones['Hojasproduccione.tipo_nota'] = $tipoentrega;
@@ -122,7 +123,7 @@ class ReportesController extends AppController {
       $condiciones["$tipofecha BETWEEN ? AND ? "] = array($fecha1, $fecha2);
     }
     $sql1 = "(case when (tipo = 'Nota de entrega') THEN (CONCAT('NE ',id)) ELSE (CONCAT('NR ',id)) END) as orden";
-    $sql2 = "SELECT $sql1 FROM `notas` WHERE (notas.trabajo_id = Hojasproduccione.trabajo_id)";
+    $sql2 = "SELECT $sql1 FROM `notas` WHERE (notas.trabajo_id = Hojasproduccione.trabajo_id AND notas.estado != 'Eliminado') ORDER BY id DESC";
     $sql3 = "SELECT nombre FROM `clientes` WHERE (clientes.id = Trabajo.cliente_id)";
     $sql4 = "SELECT descripcion FROM `tipotrabajos` WHERE (tipotrabajos.id = Hojastipostrabajo.tipotrabajo_id)";
     $this->Hojasproduccione->virtualFields = array(
@@ -141,46 +142,37 @@ class ReportesController extends AppController {
     );
     /* debug($resultados);
       exit; */
-    $this->set(compact('tipotrabajo', 'sucursal', 'resultados', 'fecha1', 'fecha2','tipoentrega'));
+    $this->set(compact('tipotrabajo', 'sucursal', 'resultados', 'fecha1', 'fecha2', 'tipoentrega'));
   }
-  
-  public function reporte_tipo_pago() {
 
-    $tipopago = $this->data['Hojasproduccione']['tipopago'];
-    //debug($tipotrabajo);exit;
-    $sucursal_id = $this->data['Hojasproduccione']['sucursale_id'];
+  public function reporte_tipo_pago() {
+    $sucursal_id = $this->request->data['Nota']['sucursale_id'];
     $sucursal = $this->Sucursale->find('first', array('fields' => array('Sucursale.nombre'), 'conditions' => array('Sucursale.id' => $sucursal_id)));
-    $fecha1 = $this->data['Hojasproduccione']['fecha_inicio'];
-    $fecha2 = $this->data['Hojasproduccione']['fecha_fin'];
-    $tipofecha = $this->data['Hojasproduccione']['tipo_fecha'];
+    $tipopago = $this->request->data['Nota']['tipopago'];
+    $fecha1 = $this->request->data['Nota']['fecha_inicio'];
+    $fecha2 = $this->request->data['Nota']['fecha_fin'];
     $condiciones = array();
     if (!empty($sucursal_id) && $sucursal_id != 'Todos') {
-      $condiciones['Hojasproduccione.sucursal_id'] = $sucursal_id;
+      $condiciones['Nota.sucursale_id'] = $sucursal_id;
+    }
+    if (!empty($tipopago) && $tipopago != 'Todos') {
+      $condiciones['Nota.tipo_pago'] = $tipopago;
     }
     if (!empty($fecha1) && !empty($fecha2)) {
-      $condiciones["$tipofecha BETWEEN ? AND ? "] = array($fecha1, $fecha2);
+      $condiciones["DATE(Nota.created) BETWEEN ? AND ? "] = array($fecha1, $fecha2);
     }
-    $sql1 = "(case when (tipo = 'Nota de entrega') THEN (CONCAT('NE ',id)) ELSE (CONCAT('NR ',id)) END) as orden";
-    $sql2 = "SELECT $sql1 FROM `notas` WHERE (notas.trabajo_id = Hojasproduccione.trabajo_id)";
-    $sql3 = "SELECT nombre FROM `clientes` WHERE (clientes.id = Trabajo.cliente_id)";
-    $sql4 = "SELECT descripcion FROM `tipotrabajos` WHERE (tipotrabajos.id = Hojastipostrabajo.tipotrabajo_id)";
-    $this->Hojasproduccione->virtualFields = array(
-      'orden' => "CONCAT(($sql2))",
-      'cliente' => "CONCAT(($sql3))",
-      'formato' => "CONCAT(Hojasproduccione.metrajeini,'x',Hojasproduccione.metrajefin)",
-      'tipo_trabajo' => "CONCAT(($sql4))"
+    $condiciones['Nota.estado !='] = 'Eliminado';
+
+    $sql1 = "SELECT nombre FROM `clientes` WHERE (clientes.id = Trabajo.cliente_id)";
+    $this->Nota->virtualFields = array(
+      'cliente' => "CONCAT(($sql1))"
     );
-    $resultados = $this->Hojasproduccione->find('all', array(
+    $resultados = $this->Nota->find('all', array(
       'recursive' => 0,
+      'fields' => array('DATE(Nota.created) as fecha_nota','Nota.numero', 'Nota.cliente','Nota.tipo_pago','Nota.tipo','Nota.numero_factura','Nota.total_pagado','Sucursale.nombre','Nota.observaciones','Nota.trabajo_id'),
       'conditions' => $condiciones
-      , 'fields' => array('DATE(Hojasproduccione.created) as fecha_produccion', 'Hojasproduccione.id',
-        'Hojasproduccione.numero_hruta', 'Hojasproduccione.orden', 'Hojasproduccione.cliente', 'Hojasproduccione.cantidad'
-        , 'Hojasproduccione.descripcion', 'Hojasproduccione.formato', 'Hojasproduccione.caras', 'Hojasproduccione.costo', 'Hojasproduccione.tipo_trabajo')
-      )
-    );
-    /* debug($resultados);
-      exit; */
-    $this->set(compact('tipotrabajo', 'sucursal', 'resultados', 'fecha1', 'fecha2','tipopago'));
+    ));
+    $this->set(compact('resultados','fecha1','fecha2','sucursal','tipopago'));
   }
 
 }

@@ -339,7 +339,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-md-4">
-                            <?php echo $this->Form->select('Hojasproduccione.tipo_nota', array('Nota de entrega' => 'Nota de entrega', 'Nota de Remision' => 'Nota de Remision'), array('class' => 'form-control', 'required', 'onchange' => 'actualiza_nota();', 'id' => 'idselectnota')) ?>
+                            <?php echo $this->Form->select('Auxiliar.tipo_nota', array('Nota de entrega' => 'Nota de entrega', 'Nota de Remision' => 'Nota de Remision'), array('class' => 'form-control', 'required', 'onchange' => 'actualiza_nota();', 'id' => 'idselectnota')) ?>
                         </div>
                         <div class="col-md-4">
 

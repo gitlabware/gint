@@ -99,37 +99,31 @@
             <table class="CSSTableGenerator" style="margin-top:-1px;" >
                 <tr>
                     <td>Fecha</td>
-                    <td>#H. Prod.</td>
-                    <td>#H. Ruta.</td>
-                    <td>#Orden</td>
+                    <td>#Nota</td>
+                    <td>#ID Trab.</td>
                     <td>Cliente</td>
-                    <td>Cantidad</td>
-                    <td>Descripcion</td>
-                    <td>Tipo Trabajo</td>
-                    <td>Formato</td>
-                    <td>Cara</td>
+                    <td>Sucursal</td>
+                    <td>Nota</td>
+                    <td>#Factura</td>
+                    <td>Pago</td>
                     <td>Costo</td>
                 </tr>
                 <?php $total = 0.00;?>
                 <?php foreach ($resultados as $re): ?>
-                <?php $total = $total +  $re['Hojasproduccione']['costo'];?>
+                <?php $total = $total +  $re['Nota']['total_pagado'];?>
                   <tr>
-                      <td><?php echo $re[0]['fecha_produccion']; ?></td>
-                      <td><?php echo $re['Hojasproduccione']['id'] ?></td>
-                      <td><?php echo $re['Hojasproduccione']['numero_hruta'] ?></td>
-                      <td><?php echo $re['Hojasproduccione']['orden'] ?></td>
-                      <td><?php echo $re['Hojasproduccione']['cliente'] ?></td>
-                      <td><?php echo $re['Hojasproduccione']['cantidad'] ?></td>
-                      <td><?php echo $re['Hojasproduccione']['descripcion'] ?></td>
-                      <td><?php echo $re['Hojasproduccione']['tipo_trabajo'] ?></td>
-                      <td><?php echo $re['Hojasproduccione']['formato'] ?></td>
-                      <td><?php echo $re['Hojasproduccione']['caras'] ?></td>
-                      <td><?php echo $re['Hojasproduccione']['costo'] ?></td>
+                      <td><?php echo $re[0]['fecha_nota']; ?></td>
+                      <td><?php echo $re['Nota']['numero'] ?></td>
+                      <td><?php echo $re['Nota']['trabajo_id'] ?></td>
+                      <td><?php echo $re['Nota']['cliente'] ?></td>
+                      <td><?php echo $re['Sucursale']['nombre'] ?></td>
+                      <td><?php echo $re['Nota']['tipo'] ?></td>
+                      <td><?php echo $re['Nota']['numero_factura'] ?></td>
+                      <td><?php echo $re['Nota']['tipo_pago'] ?></td>
+                      <td><?php echo $re['Nota']['total_pagado'] ?></td>
                   </tr>
                 <?php endforeach; ?>
                 <tr>
-                    <td></td>
-                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -141,6 +135,25 @@
                     <td><?php echo $total;?></td>
                 </tr>
             </table>
+        </div>
+    </div>
+</div>
+<div class="row hidden-print">
+    <div class="col-md-12">
+        <!-- START panel -->
+        <div class="panel panel-primary">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel-body">
+                        <button type="button" onclick="window.location = '<?php echo $this->Html->url(array('action' => 'index')); ?>';" class="btn btn-success col-md-12"> <i class="ico-pencil3"> </i> REPORTES</button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel-body">
+                        <button type="button" onclick="window.print();" class="btn btn-inverse col-md-12"> <i class="ico-print2"> </i> IMPRIMIR</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

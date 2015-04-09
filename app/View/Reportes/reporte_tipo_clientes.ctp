@@ -150,3 +150,22 @@
         </div>
     </div>
 </div>
+<div class="row hidden-print">
+    <div class="col-md-12">
+        <!-- START panel -->
+        <div class="panel panel-primary">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel-body">
+                        <button type="button" onclick="window.location = '<?php echo $this->Html->url(array('action' => 'index')); ?>';" class="btn btn-success col-md-12"> <i class="ico-pencil3"> </i> REPORTES</button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel-body">
+                        <button type="button" onclick="window.print();" class="btn btn-inverse col-md-12"> <i class="ico-print2"> </i> IMPRIMIR</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

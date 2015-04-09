@@ -225,7 +225,7 @@ class TrabajosController extends AppController {
     if (!empty($trabajo['Hojasproduccione'])) {
       $sw = 1;
       $this->request->data['Hojasproduccione'] = $trabajo['Hojasproduccione'];
-      $this->request->data['Hojasproduccione']['tipo_nota'] = $trabajo['Hojasproduccione'][0]['tipo_nota'];
+      $this->request->data['Auxiliar']['tipo_nota'] = $trabajo['Hojasproduccione'][0]['tipo_nota'];
     }
 
     /* debug($trabajo);
@@ -239,16 +239,17 @@ class TrabajosController extends AppController {
     if (!empty($this->request->data['Hojasproduccione'])) {
       $this->Hojasproduccione->saveMany($this->request->data['Hojasproduccione']);
       if (!empty($idTrabajo)) {
-        $nota = $this->Nota->find('first', array('recursive' => -1, 'fields' => array('Nota.id', 'Nota.tipo'), 'conditions' => array('Nota.trabajo_id' => $idTrabajo)));
+        $nota = $this->Nota->find('first', array('recursive' => -1,'order' => 'Nota.id DESC'
+          , 'fields' => array('Nota.id', 'Nota.tipo')
+          , 'conditions' => array('Nota.trabajo_id' => $idTrabajo)));
         if (!empty($nota)) {
-          if($nota['Nota']['tipo'] != $this->request->data['Hojasproduccione']['tipo_nota']){
+          if ($nota['Nota']['tipo'] != $this->request->data['Auxiliar']['tipo_nota']) {
             $this->Nota->id = $nota['Nota']['id'];
             $this->request->data['Nota']['estado'] = 'Eliminado';
             $this->Nota->save($this->request->data['Nota']);
           }
         }
       }
-
       if (!$sw) {
         $this->Trabajo->id = $idTrabajo;
         $this->request->data['Trabajo']['estado'] = 'Produccion';
@@ -262,7 +263,7 @@ class TrabajosController extends AppController {
   }
 
   public function nota($idTrabajo = null, $tipo = null) {
-    $nota = $this->Nota->findBytrabajo_id($idTrabajo, NULL, NULL, -1);
+    $nota = $this->Nota->find('first', array('recursive' => -1, 'conditions' => array('Nota.trabajo_id' => $idTrabajo, 'Nota.estado !=' => 'Eliminado')));
     $trabajo = $this->Trabajo->findByid($idTrabajo);
     $hp_total = $this->Hojasproduccione->find('all', array(
       'recursive' => -1,
@@ -301,7 +302,7 @@ class TrabajosController extends AppController {
   }
 
   public function vista_nota($idTrabajo = NULL, $tipo = NULL) {
-    $nota = $this->Nota->findBytrabajo_id($idTrabajo);
+    $nota = $this->Nota->find('first', array('conditions' => array('Nota.trabajo_id' => $idTrabajo, 'Nota.estado !=' => 'Eliminado')));
     if (empty($nota)) {
       $this->redirect(array('action' => 'nota', $idTrabajo, $tipo));
     }
