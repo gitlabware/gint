@@ -1,34 +1,35 @@
 <?php
+
 App::uses('AppModel', 'Model');
+
 /**
  * User Model
  *
  * @property Sucursale $Sucursale
  */
 class User extends AppModel {
-    
-    public function beforeSave($options = array()) {
-        if (!empty($this->data['User']['password'])) {
-            $this->data['User']['password'] = AuthComponent::password($this->data['User']['password']);
-        }
-        return true;
-    }
 
+  public function beforeSave($options = array()) {
 
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
+    $this->data['User']['password'] = AuthComponent::password($this->data['User']['password']);
+    return true;
+  }
 
-/**
- * belongsTo associations
- *
- * @var array
- */
-	public $belongsTo = array(
-		'Sucursale' => array(
-			'className' => 'Sucursale',
-			'foreignKey' => 'sucursale_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		)
-	);
+  //The Associations below have been created with all possible keys, those that are not needed can be removed
+
+  /**
+   * belongsTo associations
+   *
+   * @var array
+   */
+  public $belongsTo = array(
+    'Sucursale' => array(
+      'className' => 'Sucursale',
+      'foreignKey' => 'sucursale_id',
+      'conditions' => '',
+      'fields' => '',
+      'order' => ''
+    )
+  );
+
 }
