@@ -99,7 +99,12 @@ echo $this->Html->css(array(
         <div class="panel panel-success">
             <!-- panel heading/header -->
             <div class="panel-heading">
-                <h3 class="panel-title">CAJA CHICA</h3>
+                <h3 class="panel-title">
+                    CAJA CHICA &nbsp;&nbsp;
+                    ( <?php echo $this->Session->read('Auth.User.nombre'); ?> )
+                    &nbsp;&nbsp;
+                    <?php echo date('Y/m/d'); ?>
+                </h3>
                 <!-- panel toolbar -->
                 <div class="panel-toolbar text-right">
                     <!-- option -->

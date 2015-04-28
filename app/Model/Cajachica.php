@@ -4,6 +4,7 @@ App::uses('AppModel', 'Model');
  * Cajachica Model
  *
  * @property Categoriasmonto $Categoriasmonto
+ * @property User $User
  */
 class Cajachica extends AppModel {
 
@@ -19,6 +20,13 @@ class Cajachica extends AppModel {
 		'Categoriasmonto' => array(
 			'className' => 'Categoriasmonto',
 			'foreignKey' => 'categoriasmonto_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+		'User' => array(
+			'className' => 'User',
+			'foreignKey' => 'user_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''

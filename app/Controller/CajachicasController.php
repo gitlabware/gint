@@ -70,12 +70,15 @@ class CajachicasController extends AppController {
   public function nuevo() {
 
     if ($this->request->is('post')) {
-      debug($this->request->data);
+      //debug($this->request->data);
+      //$sesionUsuario = $this->Session->read['Auth']['User']['id'];
+      $sesionUsuario = $this->Session->read('Auth.User.id');
+      //debug($sesionUsuario);die;
       $ultimoTotal = $this->Cajachica->find('first', array(
         'recursive' => -1,
         'order' => 'Cajachica.id DESC'
       ));
-      debug($ultimoTotal);
+      //debug($ultimoTotal);
       $tipo = $this->request->data['Cajachica']['tipo'];
 
       if (empty($this->request->data['Cajachica']['categoriasmonto_id'])) {
@@ -90,6 +93,7 @@ class CajachicasController extends AppController {
         }
       }
       $this->Cajachica->create();
+      $this->request->data['Cajachica']['user_id']=$sesionUsuario;
       if ($tipo == 'ingreso') {
         $this->request->data['Cajachica']['entrada'] = $this->request->data['Cajachica']['monto'];
         $this->request->data['Cajachica']['total'] = $ultimoTotal['Cajachica']['total'] + $this->request->data['Cajachica']['monto'];
