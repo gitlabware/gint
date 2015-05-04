@@ -289,6 +289,7 @@ class TrabajosController extends AppController {
     if (!empty($nota)) {
       $this->Nota->id = $nota['Nota']['id'];
       $this->request->data = $this->Nota->read();
+      $numero = $this->request->data['Nota']['numero'];
     }
     $this->set(compact('trabajo', 'tipo', 'numero', 'total'));
   }
@@ -296,11 +297,17 @@ class TrabajosController extends AppController {
   public function registra_nota($idTrabajo = NULL) {
     $this->Nota->create();
     $this->request->data['Nota']['estado'] = 'Normal';
-    if ($this->Nota->save($this->request->data['Nota'])) {
-      $this->Session->setFlash('Se regsitro correctamente!!', 'msgbueno');
-    } else {
-      $this->Session->setFlash('No se pudo registrar intente nuevamente!!!', 'msgerror');
+    $valida = $this->validar('Nota');
+    if (empty($valida)) {
+      if ($this->Nota->save($this->request->data['Nota'])) {
+        $this->Session->setFlash('Se regsitro correctamente!!', 'msgbueno');
+      } else {
+        $this->Session->setFlash('No se pudo registrar intente nuevamente!!!', 'msgerror');
+      }
+    }else{
+      $this->Session->setFlash($valida,'msgerror');
     }
+
     $this->redirect(array('action' => 'vista_nota', $idTrabajo, $this->request->data['Nota']['tipo']));
   }
 
