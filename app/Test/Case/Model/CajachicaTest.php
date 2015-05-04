@@ -14,7 +14,9 @@ class CajachicaTest extends CakeTestCase {
  */
 	public $fixtures = array(
 		'app.cajachica',
-		'app.categoriasmonto'
+		'app.categoriasmonto',
+		'app.user',
+		'app.sucursale'
 	);
 
 /**

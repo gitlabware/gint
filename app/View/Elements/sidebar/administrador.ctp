@@ -274,6 +274,13 @@ $categorias = $categoria->find('all');
                     </li>
                 </ul>
             </li>
+            
+            <li>
+                <a href="<?php echo $this->Html->url(array('controller' => 'Cajachicas', 'action' => 'nuevo')); ?>"  data-parent=".topmenu">
+                    <span class="figure"><i class="ico-coins"></i></span>
+                    <span class="text">Caja Chica</span>
+                </a>
+            </li>
 
             <li>
                 <a href="<?php echo $this->Html->url(array('controller' => 'Facturas', 'action' => 'index')); ?>"  data-parent=".topmenu">

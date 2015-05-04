@@ -16,7 +16,7 @@ LAST UPDATE: 2015/01/05
         <!-- START META SECTION -->
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Adminre - backend</title>
+        <title>GINT</title>
         <meta name="author" content="pampersdry.info">
         <meta name="description" content="Adminre is a clean and flat backend and frontend theme build with twitter bootstrap">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
