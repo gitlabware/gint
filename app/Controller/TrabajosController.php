@@ -67,9 +67,15 @@ class TrabajosController extends AppController {
 
   public function registra_trabajo() {
     if (!empty($this->request->data['Cliente']['nombre'])) {
-      $this->Cliente->create();
-      $this->Cliente->save($this->request->data['Cliente']);
-      $this->request->data['Trabajo']['cliente_id'] = $this->Cliente->getLastInsertID();
+      $valida = $this->validar('Cliente');
+      if (empty($valida)) {
+        $this->Cliente->create();
+        $this->Cliente->save($this->request->data['Cliente']);
+        $this->request->data['Trabajo']['cliente_id'] = $this->Cliente->getLastInsertID();
+      } else {
+        $this->Session->setFlash($valida,'msgerror');
+        $this->redirect($this->referer());
+      }
     }
     $this->Trabajo->create();
     if ($this->Trabajo->save($this->request->data['Trabajo'])) {
@@ -304,8 +310,8 @@ class TrabajosController extends AppController {
       } else {
         $this->Session->setFlash('No se pudo registrar intente nuevamente!!!', 'msgerror');
       }
-    }else{
-      $this->Session->setFlash($valida,'msgerror');
+    } else {
+      $this->Session->setFlash($valida, 'msgerror');
     }
 
     $this->redirect(array('action' => 'vista_nota', $idTrabajo, $this->request->data['Nota']['tipo']));
@@ -349,4 +355,32 @@ class TrabajosController extends AppController {
   }
 
   //-------------- TERMINA SELECTOR CLIENTE--------------------
+  //Soluciona los clientes repetidos en trabajos y movimientos y admeas elimina los clientes repetidos 
+  public function solucion_clientes_repet() {
+    $clientes_rep = $this->Cliente->find('all', array(
+      'fields' => array('id', 'COUNT(*) AS nro_rep', 'nombre')
+      , 'group' => array('nombre HAVING nro_rep > 1')
+    ));
+    foreach ($clientes_rep as $cli) {
+      $trabajos_c = $this->Trabajo->find('all', array(
+        'fields' => array('Trabajo.id'),
+        'conditions' => array('Cliente.nombre' => $cli['Cliente']['nombre'])
+      ));
+      foreach ($trabajos_c as $tra) {
+        $this->Trabajo->id = $tra['Trabajo']['id'];
+        $this->request->data['Trabajo']['cliente_id'] = $cli['Cliente']['id'];
+        $this->Trabajo->save($this->request->data['Trabajo']);
+      }
+      $clientes = $this->Cliente->find('all', array(
+        'fields' => array('id'),
+        'conditions' => array('Cliente.nombre' => $cli['Cliente']['nombre'], 'Cliente.id !=' => $cli['Cliente']['id'])
+      ));
+      foreach ($clientes as $cl) {
+        $this->Cliente->delete($cl['Cliente']['id']);
+      }
+    }
+    debug('Se corrigio correctamente!!!');
+    exit;
+  }
+
 }
