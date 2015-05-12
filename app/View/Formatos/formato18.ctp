@@ -3,7 +3,7 @@
     <div class=" ico-calculate2 mb15 mt15" style="font-size:36px;"><h3 class="semibold modal-title text-info">Linea de agua</h3></div>
 
 </div>
-<?php echo $this->Form->create('Formato', array('action' => 'guardarformato', 'data-parsley-validate')); ?>
+<?php echo $this->Form->create('Formato', array('action' => 'guardaformato', 'data-parsley-validate')); ?>
 <div class="modal-body">
     <?php echo $this->Form->hidden('id'); ?>
 <?php echo $this->Form->hidden('url', array('value'=>'lista18')); ?>

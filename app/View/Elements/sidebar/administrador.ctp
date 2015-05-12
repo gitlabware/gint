@@ -64,22 +64,22 @@ $categorias = $categoria->find('all');
                 <ul id="side-insumos" class="submenu collapse ">
                     <li class="submenu-header ellipsis">Insumos</li>
                     <?php foreach ($categorias as $ca): ?>
-                      <li >
-                          <a href="javascript:void(0);" data-toggle="submenu" data-target="#sub-side-categorias-<?php echo $ca['Categoria']['id']; ?>" data-parent="#page">
-                              <span class="text"><?php echo $ca['Categoria']['nombre'] ?></span>
-                              <span class="arrow"></span>
-                          </a>
-                          <!-- START 2nd Level Menu -->
-                          <ul id="sub-side-categorias-<?php echo $ca['Categoria']['id']; ?>" class="submenu collapse ">
-                              <li >
-                                  <a href="<?php echo $this->Html->url(array('controller' => 'Insumos', 'action' => 'index', $ca['Categoria']['id'])); ?>"><span class="text">Listado de <?php echo $ca['Categoria']['nombre'] ?></span></a>
-                              </li>
-                              <li >
-                                  <a href="javascript:"  onclick="cargarmodal('<?php echo $this->Html->url(array('controller' => 'Insumos', 'action' => 'insumo', $ca['Categoria']['id'])); ?>');"><span class="text">Adicionar</span></a>
-                              </li>
-                          </ul>
-                          <!--/ END 2nd Level Menu -->
-                      </li>
+                        <li >
+                            <a href="javascript:void(0);" data-toggle="submenu" data-target="#sub-side-categorias-<?php echo $ca['Categoria']['id']; ?>" data-parent="#page">
+                                <span class="text"><?php echo $ca['Categoria']['nombre'] ?></span>
+                                <span class="arrow"></span>
+                            </a>
+                            <!-- START 2nd Level Menu -->
+                            <ul id="sub-side-categorias-<?php echo $ca['Categoria']['id']; ?>" class="submenu collapse ">
+                                <li >
+                                    <a href="<?php echo $this->Html->url(array('controller' => 'Insumos', 'action' => 'index', $ca['Categoria']['id'])); ?>"><span class="text">Listado de <?php echo $ca['Categoria']['nombre'] ?></span></a>
+                                </li>
+                                <li >
+                                    <a href="javascript:"  onclick="cargarmodal('<?php echo $this->Html->url(array('controller' => 'Insumos', 'action' => 'insumo', $ca['Categoria']['id'])); ?>');"><span class="text">Adicionar</span></a>
+                                </li>
+                            </ul>
+                            <!--/ END 2nd Level Menu -->
+                        </li>
                     <?php endforeach; ?>
                 </ul>
                 <!--/ END 2nd Level Menu -->
@@ -242,39 +242,98 @@ $categorias = $categoria->find('all');
                 </a>
                 <ul id="side-formatos" class="submenu collapse">
                     <li class="submenu-header ellipsis">Formatos</li>
+
                     <li>
-                        <a href="<?php echo $this->Html->url(array('controller' => 'Formatos', 'action' => 'lista34')); ?>">
+                        <a href="javascript:void(0);" data-toggle="submenu" data-target="#sub-side-34" data-parent="#page">
                             <span class="text">U.v brillo/ Mate</span>
+                            <span class="arrow"></span>
                         </a>
+                        <!-- START 2nd Level Menu -->
+                        <ul id="sub-side-34" class="submenu collapse ">
+                            <li >
+                                <a href="<?php echo $this->Html->url(array('controller' => 'Formatos', 'action' => 'lista34')); ?>"><span class="text">Listado de U.v brillo/ Mate</span></a>
+                            </li>
+                            <li >
+                                <a href="javascript:"  onclick="cargarmodal('<?php echo $this->Html->url(array('controller' => 'Formatos', 'action' => 'formato34')); ?>');"><span class="text">Adicionar U.v brillo/Mate</span></a>
+                            </li>
+                        </ul>
+                        <!--/ END 2nd Level Menu -->
                     </li>
+                    
                     <li>
-                        <a href="<?php echo $this->Html->url(array('controller' => 'Formatos', 'action' => 'lista6')); ?>">
+                        <a href="javascript:void(0);" data-toggle="submenu" data-target="#sub-side-6" data-parent="#page">
                             <span class="text">Sectorizado Brillo</span>
+                            <span class="arrow"></span>
                         </a>
+                        <ul id="sub-side-6" class="submenu collapse ">
+                            <li>
+                                <a href="<?php echo $this->Html->url(array('controller' => 'Formatos', 'action' => 'lista6')); ?>"><span class="text">Listado Sectorizado Brillo</span></a>
+                            </li>
+                            <li>
+                                <a href="javascript:" onclick="cargarmodal('<?php echo $this->Html->url(array('controller' => 'Formatos', 'action' => 'formato6'))?>');"><span class="text">Adicionar Sectorizado Brillo</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <a href="javascript:void(0);" data-toggle="submenu" data-target="#sub-side-15" data-parent="#page">
+                            <span class="text">Guillotina Cortes</span>
+                            <span class="arrow"></span>
+                        </a>
+                        <ul id="sub-side-15" class="submenu collapse ">
+                            <li>
+                                <a href="<?php echo $this->Html->url(array('controller' => 'Formatos', 'action' => 'lista15')); ?>"><span class="text">Listado Guillotina Cortes</span></a>
+                            </li>
+                            <li>
+                                <a href="javascript:" onclick="cargarmodal('<?php echo $this->Html->url(array('controller'=>'Formatos', 'action'=>'formato15'))?>');"><span class="text">Adicionar Guillotina Cortes</span></a>
+                            </li>
+                        </ul>
                     </li>
                     <li>
-                        <a href="<?php echo $this->Html->url(array('controller' => 'Formatos', 'action' => 'lista15')); ?>">
-                            <span class="text">guillotina Cortes</span>
+                        <a href="javascript:void(0);" data-toggle="submenu" data-target="#sub-side-16" data-parent="#page">
+                            <span class="text">Guillotina Hora</span>
+                            <span class="arrow"></span>
                         </a>
+                        <ul id="sub-side-16" class="submenu collapse ">
+                            <li>
+                                <a href="<?php echo $this->Html->url(array('controller' => 'Formatos', 'action' => 'lista16')); ?>"><span class="text">Listado Guillotina Hora</span></a>
+                            </li>
+                            <li>
+                                <a href="javascript:" onclick="cargarmodal('<?php echo $this->Html->url(array('controller'=>'Formatos', 'action'=>'formato16'))?>');"><span class="text">Adicionar Guillotina Hora</span></a>
+                            </li>
+                        </ul>
                     </li>
                     <li>
-                        <a href="<?php echo $this->Html->url(array('controller' => 'Formatos', 'action' => 'lista16')); ?>">
-                            <span class="text">Guillotina hora</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?php echo $this->Html->url(array('controller' => 'Formatos', 'action' => 'lista17')); ?>">
+                         <a href="javascript:void(0);" data-toggle="submenu" data-target="#sub-side-17" data-parent="#page">
                             <span class="text">Troquelado</span>
+                            <span class="arrow"></span>
                         </a>
+                        <ul id="sub-side-17" class="submenu collapse ">
+                            <li>
+                                <a href="<?php echo $this->Html->url(array('controller' => 'Formatos', 'action' => 'lista17')); ?>"><span class="text">Listado Troquelado</span></a>
+                            </li>
+                            <li>
+                                <a href="javascript:" onclick="cargarmodal('<?php echo $this->Html->url(array('controller'=>'Formatos', 'action'=>'formato17'))?>');"><span class="text">Adicionar Troquelado</span></a>
+                            </li>
+                        </ul>
                     </li>
                     <li>
-                        <a href="<?php echo $this->Html->url(array('controller' => 'Formatos', 'action' => 'lista18')); ?>">
-                            <span class="text">linea de agua</span>
+                        <a href="javascript:void(0);" data-toggle="submenu" data-target="#sub-side-18" data-parent="#page">
+                            <span class="text">Linea de Agua</span>
+                            <span class="arrow"></span>
                         </a>
+                        <ul id="sub-side-18" class="submenu collapse ">
+                            <li>
+                                <a href="<?php echo $this->Html->url(array('controller' => 'Formatos', 'action' => 'lista18')); ?>"><span class="text">Listado Linea de agua</span></a>
+                            </li>
+                            <li>
+                                <a href="javascript:" onclick="cargarmodal('<?php echo $this->Html->url(array('controller'=>'Formatos', 'action'=>'formato18'))?>');"><span class="text">Adicionar Linea de Agua</span></a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </li>
-            
+
             <li>
                 <a href="<?php echo $this->Html->url(array('controller' => 'Cajachicas', 'action' => 'nuevo')); ?>"  data-parent=".topmenu">
                     <span class="figure"><i class="ico-coins"></i></span>
