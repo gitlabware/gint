@@ -68,14 +68,14 @@ class TrabajosController extends AppController {
   public function registra_trabajo() {
     if (!empty($this->request->data['Cliente']['nombre'])) {
       $valida = $this->validar('Cliente');
-      if (empty($valida)) {
+      //if (empty($valida)) {
         $this->Cliente->create();
         $this->Cliente->save($this->request->data['Cliente']);
         $this->request->data['Trabajo']['cliente_id'] = $this->Cliente->getLastInsertID();
-      } else {
+      /*} else {
         $this->Session->setFlash($valida,'msgerror');
         $this->redirect($this->referer());
-      }
+      }*/
     }
     $this->Trabajo->create();
     if ($this->Trabajo->save($this->request->data['Trabajo'])) {

@@ -7,7 +7,7 @@ App::uses('AppModel', 'Model');
  *
  */
 class Cliente extends AppModel {
-  public $validate = array(
+  /*public $validate = array(
         'nombre' => array(
             'limitDuplicates' => array(
                 'rule' => array('limitDuplicates', 1),
@@ -26,6 +26,6 @@ class Cliente extends AppModel {
       'recursive' => -1
     ));
     return $existingPromoCount < $limit;
-  }
+  }*/
 
 }

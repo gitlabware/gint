@@ -72,8 +72,8 @@ class CajachicasController extends AppController {
     if ($this->request->is('post')) {
       //debug($this->request->data);
       //$sesionUsuario = $this->Session->read['Auth']['User']['id'];
-      $sesionUsuario = $this->Session->read('Auth.User.id');
-      //debug($sesionUsuario);die;
+      $idUsuario = $this->Session->read('Auth.User.id');
+      //debug($idUsuario);die;
       $ultimoTotal = $this->Cajachica->find('first', array(
         'recursive' => -1,
         'order' => 'Cajachica.id DESC'
@@ -106,6 +106,7 @@ class CajachicasController extends AppController {
           $this->request->data['Cajachica']['total'] = $ultimoTotal['Cajachica']['total'] - $this->request->data['Cajachica']['monto'];
         }
       }
+      $this->request->data['Cajachica']['user_id']=$idUsuario;
       if($this->Cajachica->save($this->request->data['Cajachica'])){
         $this->Session->setFlash('Registro Correctamente.', 'msgbueno');
         return $this->redirect(array('action' => 'nuevo'));
