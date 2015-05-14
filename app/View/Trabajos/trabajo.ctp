@@ -36,9 +36,9 @@
                             </div>
                             <div class="col-sm-2">
                                 <button class="btn btn-inverse col-md-12" type="button" onclick="jQuery('#idseleccli').toggle(400);
-                                  jQuery('#idnuevocli').toggle(400);
-                                  jQuery('#idclinom').attr('required', true);
-                                  jQuery('#idclinit').attr('required', true);">NUEVO</button>
+                                      jQuery('#idnuevocli').toggle(400);
+                                      jQuery('#idclinom').attr('required', true);
+                                      jQuery('#idclinit').attr('required', true);">NUEVO</button>
                             </div>
                         </div>
                         <div class="form-group" style="display: none;" id="idnuevocli">
@@ -52,9 +52,9 @@
                             </div>
                             <div class="col-md-2">
                                 <button type="button" class="btn btn-info" onclick="jQuery('#idnuevocli').toggle(400);
-                                  jQuery('#idseleccli').toggle(400);
-                                  jQuery('#idclinom').attr('required', false);
-                                  jQuery('#idclinit').attr('required', false);">SELECCIONAR</button>
+                                      jQuery('#idseleccli').toggle(400);
+                                      jQuery('#idclinom').attr('required', false);
+                                      jQuery('#idclinit').attr('required', false);">SELECCIONAR</button>
                             </div>
                         </div>
                     </div>
@@ -96,6 +96,8 @@ App::import('Model', 'Hojastipostrabajo');
 $hojastipostrabajo = new Hojastipostrabajo();
 ?>
 <script>
+  jQuery('#idclinom').attr('required', false);
+  jQuery('#idclinit').attr('required', false);
   var numero_trabajos = 0;
   var numero_tip_trab = [];
   var numero_emple = 0;
