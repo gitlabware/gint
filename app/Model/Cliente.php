@@ -7,14 +7,15 @@ App::uses('AppModel', 'Model');
  *
  */
 class Cliente extends AppModel {
+
   public $validate = array(
-        'nombre' => array(
-            'limitDuplicates' => array(
-                'rule' => array('limitDuplicates', 1),
-                'message' => 'El cliente ya esta registrado!!'
-            )
-        )
-    );
+    'nombre' => array(
+      'limitDuplicates' => array(
+        'rule' => array('limitDuplicates', 1),
+        'message' => 'El cliente ya esta registrado!!'
+      )
+    )
+  );
 
   public function limitDuplicates($check, $limit) {
     if (!empty($this->data['Cliente']['id'])) {
