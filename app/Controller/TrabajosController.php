@@ -49,9 +49,10 @@ class TrabajosController extends AppController {
     $this->Trabajo->id = $idTrabajo;
     $this->request->data = $this->Trabajo->read();
     $data_tipost = $this->Hojastipostrabajo->find('all', array(
-      'group' => array('Hojastipostrabajo.numero_hojaruta'),
+      'order' => 'Hojastipostrabajo.numero',
+      'group' => array('Hojastipostrabajo.numero_hojaruta','Hojastipostrabajo.numero'),
       'conditions' => array('Hojastipostrabajo.trabajo_id' => $idTrabajo),
-      'fields' => array('Hojastipostrabajo.numero_hojaruta')
+      'fields' => array('Hojastipostrabajo.numero_hojaruta','Hojastipostrabajo.numero')
     ));
     $data_empleados = $this->Empleadostrabajo->findAllBytrabajo_id($idTrabajo, NULL, NULL, null, NULL, -1);
     //debug($data_empleados);exit;
@@ -73,7 +74,7 @@ class TrabajosController extends AppController {
         $this->Cliente->save($this->request->data['Cliente']);
         $this->request->data['Trabajo']['cliente_id'] = $this->Cliente->getLastInsertID();
       } else {
-        $this->Session->setFlash($valida,'msgerror');
+        $this->Session->setFlash($valida, 'msgerror');
         $this->redirect($this->referer());
       }
     }
@@ -87,10 +88,10 @@ class TrabajosController extends AppController {
         $idTrabajo = $this->Trabajo->getLastInsertID();
       }
       foreach ($this->request->data['Aux'] as $key => $aux) {
-        if (!empty($aux['trabajos'][0]['numero_hojaruta'])) {
-          $numero_ruta = $aux['trabajos'][0]['numero_hojaruta'];
+        if (!empty($aux['trabajos'][1]['numero_hojaruta'])) {
+          $numero_ruta = $aux['trabajos'][1]['numero_hojaruta'];
         } else {
-          $numero_ruta = $this->get_numero_ruta($aux['sucursale_id']);
+          $numero_ruta = $this->get_numero_ruta($aux['sucursale_id'], $idTrabajo);
         }
         foreach ($aux['trabajos'] as $tra) {
           $this->request->data['Hojastipostrabajo']['trabajo_id'] = $idTrabajo;
@@ -120,12 +121,25 @@ class TrabajosController extends AppController {
     $this->redirect(array('action' => 'index'));
   }
 
-  protected function get_numero_ruta($idSucursal = NULL) {
-    $ultimo = $this->Hojastipostrabajo->find('first', array('recursive' => -1, 'order' => 'Hojastipostrabajo.numero_hojaruta DESC', 'conditions' => array('Hojastipostrabajo.sucursale_id' => $idSucursal)));
-    if (empty($ultimo)) {
-      return 1;
+  protected function get_numero_ruta($idSucursal = NULL, $idTrabajo = NULL) {
+    $ultimo_t = $this->Hojastipostrabajo->find('first', array(
+      'recursive' => -1,
+      'order' => 'Hojastipostrabajo.numero_hojaruta DESC',
+      'conditions' => array('Hojastipostrabajo.sucursale_id' => $idSucursal, 'Hojastipostrabajo.trabajo_id' => $idTrabajo)
+    ));
+    if (empty($ultimo_t)) {
+      $ultimo = $this->Hojastipostrabajo->find('first', array(
+        'recursive' => -1,
+        'order' => 'Hojastipostrabajo.numero_hojaruta DESC',
+        'conditions' => array('Hojastipostrabajo.sucursale_id' => $idSucursal)
+      ));
+      if (!empty($ultimo)) {
+        return $ultimo['Hojastipostrabajo']['numero_hojaruta'] + 1;
+      } else {
+        return 1;
+      }
     } else {
-      return $ultimo['Hojastipostrabajo']['numero_hojaruta'] + 1;
+      return $ultimo_t['Hojastipostrabajo']['numero_hojaruta'];
     }
   }
 

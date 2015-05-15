@@ -52,7 +52,7 @@ class ReportesController extends AppController {
         $resultados = $this->Hojasproduccione->find('all', array(
             'recursive' => 0,
             'conditions' => $condiciones
-            , 'fields' => array('DATE(Hojasproduccione.created) as fecha_produccion', 'Hojasproduccione.id',
+            , 'fields' => array('DATE(Hojasproduccione.created) as fecha_produccion', 'Hojasproduccione.trabajo_id',
                 'Hojasproduccione.numero_hruta', 'Hojasproduccione.orden', 'Hojasproduccione.cliente', 'Hojasproduccione.cantidad'
                 , 'Hojasproduccione.descripcion', 'Hojasproduccione.formato', 'Hojasproduccione.caras', 'Hojasproduccione.costo', 'Hojasproduccione.tipo_trabajo')
                 )
@@ -95,7 +95,7 @@ class ReportesController extends AppController {
         $resultados = $this->Hojasproduccione->find('all', array(
             'recursive' => 0,
             'conditions' => $condiciones
-            , 'fields' => array('DATE(Hojasproduccione.created) as fecha_produccion', 'Hojasproduccione.id',
+            , 'fields' => array('DATE(Hojasproduccione.created) as fecha_produccion', 'Hojasproduccione.trabajo_id',
                 'Hojasproduccione.numero_hruta', 'Hojasproduccione.orden', 'Hojasproduccione.cliente', 'Hojasproduccione.cantidad'
                 , 'Hojasproduccione.descripcion', 'Hojasproduccione.formato', 'Hojasproduccione.caras', 'Hojasproduccione.costo', 'Hojasproduccione.tipo_trabajo')
                 )
@@ -137,7 +137,7 @@ class ReportesController extends AppController {
         $resultados = $this->Hojasproduccione->find('all', array(
             'recursive' => 0,
             'conditions' => $condiciones
-            , 'fields' => array('DATE(Hojasproduccione.created) as fecha_produccion', 'Hojasproduccione.id',
+            , 'fields' => array('DATE(Hojasproduccione.created) as fecha_produccion', 'Hojasproduccione.trabajo_id',
                 'Hojasproduccione.numero_hruta', 'Hojasproduccione.orden', 'Hojasproduccione.cliente', 'Hojasproduccione.cantidad'
                 , 'Hojasproduccione.descripcion', 'Hojasproduccione.formato', 'Hojasproduccione.caras', 'Hojasproduccione.costo', 'Hojasproduccione.tipo_trabajo')
                 )

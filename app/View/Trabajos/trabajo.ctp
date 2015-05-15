@@ -230,7 +230,7 @@ $hojastipostrabajo = new Hojastipostrabajo();
   <?php foreach ($data_tipost as $da): ?>
     <?php
     $htipost = $hojastipostrabajo->find('all', array(
-      'conditions' => array('Hojastipostrabajo.trabajo_id' => $idTrabajo, 'Hojastipostrabajo.numero_hojaruta' => $da['Hojastipostrabajo']['numero_hojaruta'])
+      'conditions' => array('Hojastipostrabajo.trabajo_id' => $idTrabajo, 'Hojastipostrabajo.numero_hojaruta' => $da['Hojastipostrabajo']['numero_hojaruta'], 'Hojastipostrabajo.numero' => $da['Hojastipostrabajo']['numero'])
     ));
     ?>
           $('#idauxtrabdesc-' + numero_trabajos).val('<?php echo $htipost[0]['Hojastipostrabajo']['descripcion'] ?>');

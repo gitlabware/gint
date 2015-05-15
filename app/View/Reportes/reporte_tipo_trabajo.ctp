@@ -105,7 +105,7 @@
             <table class="CSSTableGenerator" style="margin-top:-1px;" >
                 <tr>
                     <td>Fecha</td>
-                    <td>#H. Prod.</td>
+                    <td>#Idtrab.</td>
                     <td>#H. Ruta.</td>
                     <td>#Orden</td>
                     <td>Cliente</td>
@@ -121,7 +121,7 @@
                 <?php $total = $total +  $re['Hojasproduccione']['costo'];?>
                   <tr>
                       <td><?php echo $re[0]['fecha_produccion']; ?></td>
-                      <td><?php echo $re['Hojasproduccione']['id'] ?></td>
+                      <td><?php echo $re['Hojasproduccione']['trabajo_id'] ?></td>
                       <td><?php echo $re['Hojasproduccione']['numero_hruta'] ?></td>
                       <td><?php echo $re['Hojasproduccione']['orden'] ?></td>
                       <td><?php echo $re['Hojasproduccione']['cliente'] ?></td>
