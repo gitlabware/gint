@@ -29,13 +29,17 @@ echo $this->Html->css(array(
                 </div>
                 <div class="form-group">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="control-label">Tipo de trabajo</label>
                             <?php echo $this->Form->select('Hojasproduccione.tipotrabajo', $tipotrabajos, array('class' => 'form-control', 'required', 'value' => 'Todos')); ?>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="control-label">Sucursal</label>
                             <?php echo $this->Form->select('Hojasproduccione.sucursale_id', $sucursales, array('class' => 'form-control', 'required', 'value' => 'Todos')) ?>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label">Tipo Sucursal</label>
+                            <?php echo $this->Form->select('Hojasproduccione.tiposucursal', array('Hojasproduccione.sucursale_id' => 'Sursal de Hojasproduccion','Hojastipostrabajo.sucursale_id' => 'Sucursal de Trabajo'), array('class' => 'form-control', 'required', 'value' => 'Hojasproduccione.sucursale_id')) ?>
                         </div>
                     </div>
                 </div>
@@ -77,13 +81,17 @@ echo $this->Html->css(array(
                 </div>
                 <div class="form-group">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="control-label">Cliente</label>
                             <?php echo $this->Form->select('Hojasproduccione.cliente_id', $clientes, array('class' => 'form-control', 'required', 'value' => 'Todos')); ?>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="control-label">Sucursal</label>
                             <?php echo $this->Form->select('Hojasproduccione.sucursale_id', $sucursales, array('class' => 'form-control', 'required', 'value' => 'Todos')) ?>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label">Tipo Sucursal</label>
+                            <?php echo $this->Form->select('Hojasproduccione.tiposucursal', array('Hojasproduccione.sucursale_id' => 'Sursal de Hojasproduccion','Hojastipostrabajo.sucursale_id' => 'Sucursal de Trabajo'), array('class' => 'form-control', 'required', 'value' => 'Hojasproduccione.sucursale_id')) ?>
                         </div>
                     </div>
                 </div>
@@ -125,13 +133,17 @@ echo $this->Html->css(array(
                 </div>
                 <div class="form-group">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="control-label">Nota</label>
                             <?php echo $this->Form->select('Hojasproduccione.tiponota', array('Nota de entrega' => 'Nota de entrega', 'Nota de Remision' => 'Nota de Remision', 'Todos' => 'Todos'), array('class' => 'form-control', 'required', 'value' => 'Todos')); ?>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="control-label">Sucursal</label>
                             <?php echo $this->Form->select('Hojasproduccione.sucursale_id', $sucursales, array('class' => 'form-control', 'required', 'value' => 'Todos')) ?>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label">Tipo Sucursal</label>
+                            <?php echo $this->Form->select('Hojasproduccione.tiposucursal', array('Hojasproduccione.sucursale_id' => 'Sursal de Hojasproduccion','Hojastipostrabajo.sucursale_id' => 'Sucursal de Trabajo'), array('class' => 'form-control', 'required', 'value' => 'Hojasproduccione.sucursale_id')) ?>
                         </div>
                     </div>
                 </div>

@@ -75,11 +75,19 @@
             <table class="CSSTableGenerator">
                 <tr>
                     <td><h4 class="text-danger"><?php echo strtoupper($tipo); ?> #<?php echo $nota['Nota']['numero'] ?></h4></td>
-                    <td>
-                        <h4 class="text-info">Fecha y Hora: 
+                    <td style="font-size: 14px;">
+                        <span class="text-info">Fecha y Hora: 
                             <?php echo $nota['Nota']['created'] ?>
-                        </h4>
+                        </span>
+                        <?php //debug(strtoupper($tipo)); ?>
+                        <?php if (strtoupper($tipo) === 'NOTA DE REMISION'): ?>
+                        <br>
+                        <span class="text-info">FACTURA: 
+                            <?php echo $nota['Nota']['numero_factura'] ?>
+                        </span>
+                        <?php endif; ?>
                     </td>
+
                 </tr>
             </table>
             <table class="CSSTableGenerator" style="margin-top:-1px;">

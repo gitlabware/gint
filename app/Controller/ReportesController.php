@@ -29,9 +29,11 @@ class ReportesController extends AppController {
         $fecha1 = $this->data['Hojasproduccione']['fecha_inicio'];
         $fecha2 = $this->data['Hojasproduccione']['fecha_fin'];
         $tipofecha = $this->data['Hojasproduccione']['tipo_fecha'];
+        
+        $tiposucursal = $this->data['Hojasproduccione']['tiposucursal'];
         $condiciones = array();
         if (!empty($sucursal_id) && $sucursal_id != 'Todos') {
-            $condiciones['Hojasproduccione.sucursale_id'] = $sucursal_id;
+            $condiciones["$tiposucursal"] = $sucursal_id;
         }
         if (!empty($tipotrabajo_id) && $tipotrabajo_id != 'Todos') {
             $condiciones['Hojasproduccione.tipotrabajo_id'] = $tipotrabajo_id;
@@ -39,7 +41,7 @@ class ReportesController extends AppController {
         if (!empty($fecha1) && !empty($fecha2)) {
             $condiciones["$tipofecha BETWEEN ? AND ? "] = array($fecha1, $fecha2);
         }
-        $sql1 = "(case when (tipo = 'Nota de entrega') THEN (CONCAT('NE ',id)) ELSE (CONCAT('NR ',id)) END) as orden";
+        $sql1 = "(case when (tipo = 'Nota de entrega') THEN (CONCAT('NE ',numero)) ELSE (CONCAT('NR ',numero)) END) as orden";
         $sql2 = "SELECT $sql1 FROM `notas` WHERE (notas.trabajo_id = Hojasproduccione.trabajo_id AND notas.estado != 'Eliminado') ORDER BY id DESC";
         $sql3 = "SELECT nombre FROM `clientes` WHERE (clientes.id = Trabajo.cliente_id)";
         $sql4 = "SELECT descripcion FROM `tipotrabajos` WHERE (tipotrabajos.id = Hojastipostrabajo.tipotrabajo_id)";
@@ -72,9 +74,10 @@ class ReportesController extends AppController {
         $fecha1 = $this->data['Hojasproduccione']['fecha_inicio'];
         $fecha2 = $this->data['Hojasproduccione']['fecha_fin'];
         $tipofecha = $this->data['Hojasproduccione']['tipo_fecha'];
+        $tiposucursal = $this->data['Hojasproduccione']['tiposucursal'];
         $condiciones = array();
         if (!empty($sucursal_id) && $sucursal_id != 'Todos') {
-            $condiciones['Hojasproduccione.sucursale_id'] = $sucursal_id;
+            $condiciones["$tiposucursal"] = $sucursal_id;
         }
         if (!empty($cliente_id) && $cliente_id != 'Todos') {
             $condiciones['Trabajo.cliente_id'] = $cliente_id;
@@ -82,7 +85,7 @@ class ReportesController extends AppController {
         if (!empty($fecha1) && !empty($fecha2)) {
             $condiciones["$tipofecha BETWEEN ? AND ? "] = array($fecha1, $fecha2);
         }
-        $sql1 = "(case when (tipo = 'Nota de entrega') THEN (CONCAT('NE ',id)) ELSE (CONCAT('NR ',id)) END) as orden";
+        $sql1 = "(case when (tipo = 'Nota de entrega') THEN (CONCAT('NE ',numero)) ELSE (CONCAT('NR ',numero)) END) as orden";
         $sql2 = "SELECT $sql1 FROM `notas` WHERE (notas.trabajo_id = Hojasproduccione.trabajo_id AND notas.estado != 'Eliminado') ORDER BY id DESC";
         $sql3 = "SELECT nombre FROM `clientes` WHERE (clientes.id = Trabajo.cliente_id)";
         $sql4 = "SELECT descripcion FROM `tipotrabajos` WHERE (tipotrabajos.id = Hojastipostrabajo.tipotrabajo_id)";
@@ -114,9 +117,11 @@ class ReportesController extends AppController {
         $fecha1 = $this->data['Hojasproduccione']['fecha_inicio'];
         $fecha2 = $this->data['Hojasproduccione']['fecha_fin'];
         $tipofecha = $this->data['Hojasproduccione']['tipo_fecha'];
+        
+        $tiposucursal = $this->data['Hojasproduccione']['tiposucursal'];
         $condiciones = array();
         if (!empty($sucursal_id) && $sucursal_id != 'Todos') {
-            $condiciones['Hojasproduccione.sucursale_id'] = $sucursal_id;
+            $condiciones["$tiposucursal"] = $sucursal_id;
         }
         if (!empty($tipoentrega) && $tipoentrega != 'Todos') {
             $condiciones['Hojasproduccione.tipo_nota'] = $tipoentrega;
@@ -124,7 +129,7 @@ class ReportesController extends AppController {
         if (!empty($fecha1) && !empty($fecha2)) {
             $condiciones["$tipofecha BETWEEN ? AND ? "] = array($fecha1, $fecha2);
         }
-        $sql1 = "(case when (tipo = 'Nota de entrega') THEN (CONCAT('NE ',id)) ELSE (CONCAT('NR ',id)) END) as orden";
+        $sql1 = "(case when (tipo = 'Nota de entrega') THEN (CONCAT('NE ',numero)) ELSE (CONCAT('NR ',numero)) END) as orden";
         $sql2 = "SELECT $sql1 FROM `notas` WHERE (notas.trabajo_id = Hojasproduccione.trabajo_id AND notas.estado != 'Eliminado') ORDER BY id DESC";
         $sql3 = "SELECT nombre FROM `clientes` WHERE (clientes.id = Trabajo.cliente_id)";
         $sql4 = "SELECT descripcion FROM `tipotrabajos` WHERE (tipotrabajos.id = Hojastipostrabajo.tipotrabajo_id)";
