@@ -29,11 +29,11 @@ class ReportesController extends AppController {
         $fecha1 = $this->data['Hojasproduccione']['fecha_inicio'];
         $fecha2 = $this->data['Hojasproduccione']['fecha_fin'];
         $tipofecha = $this->data['Hojasproduccione']['tipo_fecha'];
-        
+
         $tiposucursal = $this->data['Hojasproduccione']['tiposucursal'];
         $condiciones = array();
         if (!empty($sucursal_id) && $sucursal_id != 'Todos') {
-            $condiciones["$tiposucursal"] = $sucursal_id;
+            $condiciones["$tiposucursal.sucursale_id"] = $sucursal_id;
         }
         if (!empty($tipotrabajo_id) && $tipotrabajo_id != 'Todos') {
             $condiciones['Hojasproduccione.tipotrabajo_id'] = $tipotrabajo_id;
@@ -41,6 +41,11 @@ class ReportesController extends AppController {
         if (!empty($fecha1) && !empty($fecha2)) {
             $condiciones["$tipofecha BETWEEN ? AND ? "] = array($fecha1, $fecha2);
         }
+        $campo_sucursal = 'Sucursale.nombre';
+        if ($tiposucursal != 'Hojasproduccione') {
+            $campo_sucursal = 'Sucursaltt.nombre';
+        }
+
         $sql1 = "(case when (tipo = 'Nota de entrega') THEN (CONCAT('NE ',numero)) ELSE (CONCAT('NR ',numero)) END) as orden";
         $sql2 = "SELECT $sql1 FROM `notas` WHERE (notas.trabajo_id = Hojasproduccione.trabajo_id AND notas.estado != 'Eliminado') ORDER BY id DESC";
         $sql3 = "SELECT nombre FROM `clientes` WHERE (clientes.id = Trabajo.cliente_id)";
@@ -49,18 +54,29 @@ class ReportesController extends AppController {
             'orden' => "CONCAT(($sql2))",
             'cliente' => "CONCAT(($sql3))",
             'formato' => "CONCAT(Hojasproduccione.metrajeini,'x',Hojasproduccione.metrajefin)",
-            'tipo_trabajo' => "CONCAT(($sql4))"
+            'tipo_trabajo' => "CONCAT(($sql4))",
+            'la_sucursal' => "($campo_sucursal)"
         );
         $resultados = $this->Hojasproduccione->find('all', array(
             'recursive' => 0,
+            'joins' => array(
+                array(
+                    'table' => 'sucursales',
+                    'alias' => 'Sucursaltt',
+                    'type' => 'LEFT',
+                    'conditions' => array(
+                        'Sucursaltt.id = Hojastipostrabajo.sucursale_id'
+                    )
+                )
+            ),
             'conditions' => $condiciones
             , 'fields' => array('DATE(Hojasproduccione.created) as fecha_produccion', 'Hojasproduccione.trabajo_id',
                 'Hojasproduccione.numero_hruta', 'Hojasproduccione.orden', 'Hojasproduccione.cliente', 'Hojasproduccione.cantidad'
-                , 'Hojasproduccione.descripcion', 'Hojasproduccione.formato', 'Hojasproduccione.caras', 'Hojasproduccione.costo', 'Hojasproduccione.tipo_trabajo')
+                , 'Hojasproduccione.descripcion', 'Hojasproduccione.formato', 'Hojasproduccione.caras', 'Hojasproduccione.costo', 'Hojasproduccione.tipo_trabajo','Hojasproduccione.la_sucursal')
                 )
         );
-        /* debug($resultados);
-          exit; */
+        /*debug($resultados);
+        exit;*/
         $this->set(compact('tipotrabajo', 'sucursal', 'resultados', 'fecha1', 'fecha2'));
     }
 
@@ -117,7 +133,7 @@ class ReportesController extends AppController {
         $fecha1 = $this->data['Hojasproduccione']['fecha_inicio'];
         $fecha2 = $this->data['Hojasproduccione']['fecha_fin'];
         $tipofecha = $this->data['Hojasproduccione']['tipo_fecha'];
-        
+
         $tiposucursal = $this->data['Hojasproduccione']['tiposucursal'];
         $condiciones = array();
         if (!empty($sucursal_id) && $sucursal_id != 'Todos') {
@@ -199,12 +215,12 @@ class ReportesController extends AppController {
             }
         }
         $condiciones['Cajachica.fecha BETWEEN ? AND ? '] = array($fecha1, $fecha2);
-        $movimientos=$this->Cajachica->find('all', array(
+        $movimientos = $this->Cajachica->find('all', array(
             'recursive' => 0,
-            'fields'=>array('Cajachica.fecha', 'Categoriasmonto.nombre','Cajachica.nota','Cajachica.entrada', 'Cajachica.salida','Cajachica.total','Cajachica.observaciones','User.nombre'),
+            'fields' => array('Cajachica.fecha', 'Categoriasmonto.nombre', 'Cajachica.nota', 'Cajachica.entrada', 'Cajachica.salida', 'Cajachica.total', 'Cajachica.observaciones', 'User.nombre'),
             'conditions' => $condiciones
         ));
-        $this->set(compact('fecha1', 'fecha2','movimientos','tipo'));
+        $this->set(compact('fecha1', 'fecha2', 'movimientos', 'tipo'));
     }
 
 }

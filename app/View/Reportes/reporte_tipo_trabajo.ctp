@@ -85,18 +85,18 @@
                     <td class="text-success">
                         TRABAJO: <?php
                         if (!empty($tipotrabajo)) {
-                          echo $tipotrabajo['Tipotrabajo']['descripcion'];
+                            echo $tipotrabajo['Tipotrabajo']['descripcion'];
                         } else {
-                          echo 'Todos';
+                            echo 'Todos';
                         }
                         ?>
                     </td>
                     <td class="text-success">
                         SUCURSAL: <?php
                         if (!empty($sucursal)) {
-                          echo $sucursal['Sucursale']['nombre'];
+                            echo $sucursal['Sucursale']['nombre'];
                         } else {
-                          echo 'Todos';
+                            echo 'Todos';
                         }
                         ?>
                     </td>
@@ -108,6 +108,9 @@
                     <td>#Idtrab.</td>
                     <td>#H. Ruta.</td>
                     <td>#Orden</td>
+                    <?php if (empty($sucursal)): ?>
+                        <td>Sucursal</td>
+                    <?php endif; ?>
                     <td>Cliente</td>
                     <td>Cantidad</td>
                     <td>Descripcion</td>
@@ -116,22 +119,25 @@
                     <td>Cara</td>
                     <td>Costo</td>
                 </tr>
-                <?php $total = 0.00;?>
+                <?php $total = 0.00; ?>
                 <?php foreach ($resultados as $re): ?>
-                <?php $total = $total +  $re['Hojasproduccione']['costo'];?>
-                  <tr>
-                      <td><?php echo $re[0]['fecha_produccion']; ?></td>
-                      <td><?php echo $re['Hojasproduccione']['trabajo_id'] ?></td>
-                      <td><?php echo $re['Hojasproduccione']['numero_hruta'] ?></td>
-                      <td><?php echo $re['Hojasproduccione']['orden'] ?></td>
-                      <td><?php echo $re['Hojasproduccione']['cliente'] ?></td>
-                      <td><?php echo $re['Hojasproduccione']['cantidad'] ?></td>
-                      <td><?php echo $re['Hojasproduccione']['descripcion'] ?></td>
-                      <td><?php echo $re['Hojasproduccione']['tipo_trabajo'] ?></td>
-                      <td><?php echo $re['Hojasproduccione']['formato'] ?></td>
-                      <td><?php echo $re['Hojasproduccione']['caras'] ?></td>
-                      <td><?php echo $re['Hojasproduccione']['costo'] ?></td>
-                  </tr>
+                    <?php $total = $total + $re['Hojasproduccione']['costo']; ?>
+                    <tr>
+                        <td><?php echo $re[0]['fecha_produccion']; ?></td>
+                        <td><?php echo $re['Hojasproduccione']['trabajo_id'] ?></td>
+                        <td><?php echo $re['Hojasproduccione']['numero_hruta'] ?></td>
+                        <td><?php echo $re['Hojasproduccione']['orden'] ?></td>
+                        <?php if (empty($sucursal)): ?>
+                            <td><?php echo $re['Hojasproduccione']['orden'] ?></td>
+                        <?php endif; ?>
+                        <td><?php echo $re['Hojasproduccione']['cliente'] ?></td>
+                        <td><?php echo $re['Hojasproduccione']['cantidad'] ?></td>
+                        <td><?php echo $re['Hojasproduccione']['descripcion'] ?></td>
+                        <td><?php echo $re['Hojasproduccione']['tipo_trabajo'] ?></td>
+                        <td><?php echo $re['Hojasproduccione']['formato'] ?></td>
+                        <td><?php echo $re['Hojasproduccione']['caras'] ?></td>
+                        <td><?php echo $re['Hojasproduccione']['costo'] ?></td>
+                    </tr>
                 <?php endforeach; ?>
                 <tr>
                     <td></td>
@@ -144,7 +150,7 @@
                     <td></td>
                     <td></td>
                     <td>TOTAL</td>
-                    <td><?php echo $total;?></td>
+                    <td><?php echo $total; ?></td>
                 </tr>
             </table>
         </div>
