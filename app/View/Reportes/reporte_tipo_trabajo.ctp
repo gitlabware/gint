@@ -128,7 +128,7 @@
                         <td><?php echo $re['Hojasproduccione']['numero_hruta'] ?></td>
                         <td><?php echo $re['Hojasproduccione']['orden'] ?></td>
                         <?php if (empty($sucursal)): ?>
-                            <td><?php echo $re['Hojasproduccione']['orden'] ?></td>
+                            <td><?php echo $re['Hojasproduccione']['la_sucursal'] ?></td>
                         <?php endif; ?>
                         <td><?php echo $re['Hojasproduccione']['cliente'] ?></td>
                         <td><?php echo $re['Hojasproduccione']['cantidad'] ?></td>
@@ -144,6 +144,9 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <?php if (empty($sucursal)): ?>
+                        <td></td>
+                    <?php endif; ?>
                     <td></td>
                     <td></td>
                     <td></td>

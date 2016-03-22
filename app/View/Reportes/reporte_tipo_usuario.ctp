@@ -75,7 +75,7 @@
             <table class="CSSTableGenerator">
                 <tr>
                     <td class="text-center">
-                        <h4 class="text-info">REPORTE POR CLIENTES</h4>
+                        <h4 class="text-info">REPORTE POR TIPO DE USUARIO</h4>
                     </td>
                 </tr>
             </table>
@@ -83,20 +83,20 @@
                 <tr>
                     <td class="text-success">REPORTE ENTRE FECHAS : <?php echo $fecha1 . 'A ' . $fecha2; ?></td>
                     <td class="text-success">
-                        CLIENTE: <?php
-                        if (!empty($cliente)) {
-                          echo $cliente['Cliente']['nombre'];
+                        USUARIO: <?php
+                        if (!empty($d_usuario)) {
+                            echo $d_usuario['User']['nombre'];
                         } else {
-                          echo 'Todos';
+                            echo 'Todos';
                         }
                         ?>
                     </td>
                     <td class="text-success">
                         SUCURSAL: <?php
                         if (!empty($sucursal)) {
-                          echo $sucursal['Sucursale']['nombre'];
+                            echo $sucursal['Sucursale']['nombre'];
                         } else {
-                          echo 'Todos';
+                            echo 'Todos';
                         }
                         ?>
                     </td>
@@ -111,6 +111,9 @@
                     <?php if (empty($sucursal)): ?>
                         <td>Sucursal</td>
                     <?php endif; ?>
+                    <?php if (empty($d_usuario)): ?>
+                        <td>Usuario</td>
+                    <?php endif; ?>
                     <td>Cliente</td>
                     <td>Cantidad</td>
                     <td>Descripcion</td>
@@ -119,25 +122,28 @@
                     <td>Cara</td>
                     <td>Costo</td>
                 </tr>
-                <?php $total = 0.00;?>
+                <?php $total = 0.00; ?>
                 <?php foreach ($resultados as $re): ?>
-                <?php $total = $total +  $re['Hojasproduccione']['costo'];?>
-                  <tr>
-                      <td><?php echo $re[0]['fecha_produccion']; ?></td>
-                      <td><?php echo $re['Hojasproduccione']['trabajo_id'] ?></td>
-                      <td><?php echo $re['Hojasproduccione']['numero_hruta'] ?></td>
-                      <td><?php echo $re['Hojasproduccione']['orden'] ?></td>
+                    <?php $total = $total + $re['Hojasproduccione']['costo']; ?>
+                    <tr>
+                        <td><?php echo $re[0]['fecha_produccion']; ?></td>
+                        <td><?php echo $re['Hojasproduccione']['trabajo_id'] ?></td>
+                        <td><?php echo $re['Hojasproduccione']['numero_hruta'] ?></td>
+                        <td><?php echo $re['Hojasproduccione']['orden'] ?></td>
                         <?php if (empty($sucursal)): ?>
                             <td><?php echo $re['Hojasproduccione']['la_sucursal'] ?></td>
                         <?php endif; ?>
-                      <td><?php echo $re['Hojasproduccione']['cliente'] ?></td>
-                      <td><?php echo $re['Hojasproduccione']['cantidad'] ?></td>
-                      <td><?php echo $re['Hojasproduccione']['descripcion'] ?></td>
-                      <td><?php echo $re['Hojasproduccione']['tipo_trabajo'] ?></td>
-                      <td><?php echo $re['Hojasproduccione']['formato'] ?></td>
-                      <td><?php echo $re['Hojasproduccione']['caras'] ?></td>
-                      <td><?php echo $re['Hojasproduccione']['costo'] ?></td>
-                  </tr>
+                        <?php if (empty($d_usuario)): ?>
+                            <td><?php echo $re['User']['nombre'] ?></td>
+                        <?php endif; ?>
+                        <td><?php echo $re['Hojasproduccione']['cliente'] ?></td>
+                        <td><?php echo $re['Hojasproduccione']['cantidad'] ?></td>
+                        <td><?php echo $re['Hojasproduccione']['descripcion'] ?></td>
+                        <td><?php echo $re['Hojasproduccione']['tipo_trabajo'] ?></td>
+                        <td><?php echo $re['Hojasproduccione']['formato'] ?></td>
+                        <td><?php echo $re['Hojasproduccione']['caras'] ?></td>
+                        <td><?php echo $re['Hojasproduccione']['costo'] ?></td>
+                    </tr>
                 <?php endforeach; ?>
                 <tr>
                     <td></td>
@@ -147,13 +153,16 @@
                     <?php if (empty($sucursal)): ?>
                         <td></td>
                     <?php endif; ?>
+                    <?php if (empty($d_usuario)): ?>
+                        <td></td>
+                    <?php endif; ?>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td>TOTAL</td>
-                    <td><?php echo $total;?></td>
+                    <td><?php echo $total; ?></td>
                 </tr>
             </table>
         </div>

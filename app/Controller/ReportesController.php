@@ -14,7 +14,10 @@ class ReportesController extends AppController {
         $sucursales['Todos'] = 'Todos';
         $clientes = $this->Cliente->find('list', array('fields' => array('Cliente.nombre')));
         $clientes['Todos'] = 'Todos';
-        $usuarios = $this->User->find('list', array('fields' => array('User.nombre')));
+        
+        $usuarios = $this->User->find('list', array(
+            'fields' => array('User.id','User.nombre')
+        ));
         $usuarios['Todos'] = 'Todos';
         $this->set(compact('tipotrabajos', 'sucursales', 'clientes', 'usuarios'));
     }
@@ -47,7 +50,7 @@ class ReportesController extends AppController {
         }
 
         $sql1 = "(case when (tipo = 'Nota de entrega') THEN (CONCAT('NE ',numero)) ELSE (CONCAT('NR ',numero)) END) as orden";
-        $sql2 = "SELECT $sql1 FROM `notas` WHERE (notas.trabajo_id = Hojasproduccione.trabajo_id AND notas.estado != 'Eliminado') ORDER BY id DESC";
+        $sql2 = "SELECT $sql1 FROM `notas` WHERE (notas.trabajo_id = Hojasproduccione.trabajo_id AND notas.estado != 'Eliminado') ORDER BY id DESC LIMIT 1";
         $sql3 = "SELECT nombre FROM `clientes` WHERE (clientes.id = Trabajo.cliente_id)";
         $sql4 = "SELECT descripcion FROM `tipotrabajos` WHERE (tipotrabajos.id = Hojastipostrabajo.tipotrabajo_id)";
         $this->Hojasproduccione->virtualFields = array(
@@ -72,11 +75,11 @@ class ReportesController extends AppController {
             'conditions' => $condiciones
             , 'fields' => array('DATE(Hojasproduccione.created) as fecha_produccion', 'Hojasproduccione.trabajo_id',
                 'Hojasproduccione.numero_hruta', 'Hojasproduccione.orden', 'Hojasproduccione.cliente', 'Hojasproduccione.cantidad'
-                , 'Hojasproduccione.descripcion', 'Hojasproduccione.formato', 'Hojasproduccione.caras', 'Hojasproduccione.costo', 'Hojasproduccione.tipo_trabajo','Hojasproduccione.la_sucursal')
+                , 'Hojasproduccione.descripcion', 'Hojasproduccione.formato', 'Hojasproduccione.caras', 'Hojasproduccione.costo', 'Hojasproduccione.tipo_trabajo', 'Hojasproduccione.la_sucursal')
                 )
         );
-        /*debug($resultados);
-        exit;*/
+        /* debug($resultados);
+          exit; */
         $this->set(compact('tipotrabajo', 'sucursal', 'resultados', 'fecha1', 'fecha2'));
     }
 
@@ -93,7 +96,7 @@ class ReportesController extends AppController {
         $tiposucursal = $this->data['Hojasproduccione']['tiposucursal'];
         $condiciones = array();
         if (!empty($sucursal_id) && $sucursal_id != 'Todos') {
-            $condiciones["$tiposucursal"] = $sucursal_id;
+            $condiciones["$tiposucursal.sucursale_id"] = $sucursal_id;
         }
         if (!empty($cliente_id) && $cliente_id != 'Todos') {
             $condiciones['Trabajo.cliente_id'] = $cliente_id;
@@ -101,22 +104,37 @@ class ReportesController extends AppController {
         if (!empty($fecha1) && !empty($fecha2)) {
             $condiciones["$tipofecha BETWEEN ? AND ? "] = array($fecha1, $fecha2);
         }
+        $campo_sucursal = 'Sucursale.nombre';
+        if ($tiposucursal != 'Hojasproduccione') {
+            $campo_sucursal = 'Sucursaltt.nombre';
+        }
         $sql1 = "(case when (tipo = 'Nota de entrega') THEN (CONCAT('NE ',numero)) ELSE (CONCAT('NR ',numero)) END) as orden";
-        $sql2 = "SELECT $sql1 FROM `notas` WHERE (notas.trabajo_id = Hojasproduccione.trabajo_id AND notas.estado != 'Eliminado') ORDER BY id DESC";
+        $sql2 = "SELECT $sql1 FROM `notas` WHERE (notas.trabajo_id = Hojasproduccione.trabajo_id AND notas.estado != 'Eliminado') ORDER BY id DESC LIMIT 1";
         $sql3 = "SELECT nombre FROM `clientes` WHERE (clientes.id = Trabajo.cliente_id)";
         $sql4 = "SELECT descripcion FROM `tipotrabajos` WHERE (tipotrabajos.id = Hojastipostrabajo.tipotrabajo_id)";
         $this->Hojasproduccione->virtualFields = array(
             'orden' => "CONCAT(($sql2))",
             'cliente' => "CONCAT(($sql3))",
             'formato' => "CONCAT(Hojasproduccione.metrajeini,'x',Hojasproduccione.metrajefin)",
-            'tipo_trabajo' => "CONCAT(($sql4))"
+            'tipo_trabajo' => "CONCAT(($sql4))",
+            'la_sucursal' => "($campo_sucursal)"
         );
         $resultados = $this->Hojasproduccione->find('all', array(
             'recursive' => 0,
+            'joins' => array(
+                array(
+                    'table' => 'sucursales',
+                    'alias' => 'Sucursaltt',
+                    'type' => 'LEFT',
+                    'conditions' => array(
+                        'Sucursaltt.id = Hojastipostrabajo.sucursale_id'
+                    )
+                )
+            ),
             'conditions' => $condiciones
             , 'fields' => array('DATE(Hojasproduccione.created) as fecha_produccion', 'Hojasproduccione.trabajo_id',
                 'Hojasproduccione.numero_hruta', 'Hojasproduccione.orden', 'Hojasproduccione.cliente', 'Hojasproduccione.cantidad'
-                , 'Hojasproduccione.descripcion', 'Hojasproduccione.formato', 'Hojasproduccione.caras', 'Hojasproduccione.costo', 'Hojasproduccione.tipo_trabajo')
+                , 'Hojasproduccione.descripcion', 'Hojasproduccione.formato', 'Hojasproduccione.caras', 'Hojasproduccione.costo', 'Hojasproduccione.tipo_trabajo', 'Hojasproduccione.la_sucursal')
                 )
         );
         /* debug($resultados);
@@ -137,7 +155,7 @@ class ReportesController extends AppController {
         $tiposucursal = $this->data['Hojasproduccione']['tiposucursal'];
         $condiciones = array();
         if (!empty($sucursal_id) && $sucursal_id != 'Todos') {
-            $condiciones["$tiposucursal"] = $sucursal_id;
+            $condiciones["$tiposucursal.sucursale_id"] = $sucursal_id;
         }
         if (!empty($tipoentrega) && $tipoentrega != 'Todos') {
             $condiciones['Hojasproduccione.tipo_nota'] = $tipoentrega;
@@ -145,27 +163,112 @@ class ReportesController extends AppController {
         if (!empty($fecha1) && !empty($fecha2)) {
             $condiciones["$tipofecha BETWEEN ? AND ? "] = array($fecha1, $fecha2);
         }
+        $campo_sucursal = 'Sucursale.nombre';
+        if ($tiposucursal != 'Hojasproduccione') {
+            $campo_sucursal = 'Sucursaltt.nombre';
+        }
         $sql1 = "(case when (tipo = 'Nota de entrega') THEN (CONCAT('NE ',numero)) ELSE (CONCAT('NR ',numero)) END) as orden";
-        $sql2 = "SELECT $sql1 FROM `notas` WHERE (notas.trabajo_id = Hojasproduccione.trabajo_id AND notas.estado != 'Eliminado') ORDER BY id DESC";
+        $sql2 = "SELECT $sql1 FROM `notas` WHERE (notas.trabajo_id = Hojasproduccione.trabajo_id AND notas.estado != 'Eliminado') ORDER BY id DESC LIMIT 1";
         $sql3 = "SELECT nombre FROM `clientes` WHERE (clientes.id = Trabajo.cliente_id)";
         $sql4 = "SELECT descripcion FROM `tipotrabajos` WHERE (tipotrabajos.id = Hojastipostrabajo.tipotrabajo_id)";
         $this->Hojasproduccione->virtualFields = array(
             'orden' => "CONCAT(($sql2))",
             'cliente' => "CONCAT(($sql3))",
             'formato' => "CONCAT(Hojasproduccione.metrajeini,'x',Hojasproduccione.metrajefin)",
-            'tipo_trabajo' => "CONCAT(($sql4))"
+            'tipo_trabajo' => "CONCAT(($sql4))",
+            'la_sucursal' => "($campo_sucursal)"
         );
         $resultados = $this->Hojasproduccione->find('all', array(
             'recursive' => 0,
+            'joins' => array(
+                array(
+                    'table' => 'sucursales',
+                    'alias' => 'Sucursaltt',
+                    'type' => 'LEFT',
+                    'conditions' => array(
+                        'Sucursaltt.id = Hojastipostrabajo.sucursale_id'
+                    )
+                )
+            ),
             'conditions' => $condiciones
             , 'fields' => array('DATE(Hojasproduccione.created) as fecha_produccion', 'Hojasproduccione.trabajo_id',
                 'Hojasproduccione.numero_hruta', 'Hojasproduccione.orden', 'Hojasproduccione.cliente', 'Hojasproduccione.cantidad'
-                , 'Hojasproduccione.descripcion', 'Hojasproduccione.formato', 'Hojasproduccione.caras', 'Hojasproduccione.costo', 'Hojasproduccione.tipo_trabajo')
+                , 'Hojasproduccione.descripcion', 'Hojasproduccione.formato', 'Hojasproduccione.caras', 'Hojasproduccione.costo', 'Hojasproduccione.tipo_trabajo', 'Hojasproduccione.la_sucursal')
                 )
         );
         /* debug($resultados);
           exit; */
         $this->set(compact('tipotrabajo', 'sucursal', 'resultados', 'fecha1', 'fecha2', 'tipoentrega'));
+    }
+
+    public function reporte_tipo_usuario() {
+        
+        $tipoentrega = $this->data['Hojasproduccione']['tiponota'];
+        $usuario = $this->data['Hojasproduccione']['user_id'];
+        
+        $d_usuario = $this->User->find('first',array(
+            'recursive' => -1,
+            'conditions' => array('User.id' => $usuario)
+        ));
+        
+        //debug($tipotrabajo);exit;
+        $sucursal_id = $this->data['Hojasproduccione']['sucursale_id'];
+        $sucursal = $this->Sucursale->find('first', array('fields' => array('Sucursale.nombre'), 'conditions' => array('Sucursale.id' => $sucursal_id)));
+        $fecha1 = $this->data['Hojasproduccione']['fecha_inicio'];
+        $fecha2 = $this->data['Hojasproduccione']['fecha_fin'];
+        $tipofecha = $this->data['Hojasproduccione']['tipo_fecha'];
+
+        $tiposucursal = $this->data['Hojasproduccione']['tiposucursal'];
+        $condiciones = array();
+        if (!empty($sucursal_id) && $sucursal_id != 'Todos') {
+            $condiciones["$tiposucursal.sucursale_id"] = $sucursal_id;
+        }
+        if (!empty($tipoentrega) && $tipoentrega != 'Todos') {
+            $condiciones['Hojasproduccione.tipo_nota'] = $tipoentrega;
+        }
+        
+        if (!empty($usuario) && $usuario != 'Todos') {
+            $condiciones['Hojasproduccione.user_id'] = $usuario;
+        }
+        if (!empty($fecha1) && !empty($fecha2)) {
+            $condiciones["$tipofecha BETWEEN ? AND ? "] = array($fecha1, $fecha2);
+        }
+        $campo_sucursal = 'Sucursale.nombre';
+        if ($tiposucursal != 'Hojasproduccione') {
+            $campo_sucursal = 'Sucursaltt.nombre';
+        }
+        $sql1 = "(case when (tipo = 'Nota de entrega') THEN (CONCAT('NE ',numero)) ELSE (CONCAT('NR ',numero)) END) as orden";
+        $sql2 = "SELECT $sql1 FROM `notas` WHERE (notas.trabajo_id = Hojasproduccione.trabajo_id AND notas.estado != 'Eliminado') ORDER BY id DESC LIMIT 1";
+        $sql3 = "SELECT nombre FROM `clientes` WHERE (clientes.id = Trabajo.cliente_id)";
+        $sql4 = "SELECT descripcion FROM `tipotrabajos` WHERE (tipotrabajos.id = Hojastipostrabajo.tipotrabajo_id)";
+        $this->Hojasproduccione->virtualFields = array(
+            'orden' => "CONCAT(($sql2))",
+            'cliente' => "CONCAT(($sql3))",
+            'formato' => "CONCAT(Hojasproduccione.metrajeini,'x',Hojasproduccione.metrajefin)",
+            'tipo_trabajo' => "CONCAT(($sql4))",
+            'la_sucursal' => "($campo_sucursal)"
+        );
+        $resultados = $this->Hojasproduccione->find('all', array(
+            'recursive' => 0,
+            'joins' => array(
+                array(
+                    'table' => 'sucursales',
+                    'alias' => 'Sucursaltt',
+                    'type' => 'LEFT',
+                    'conditions' => array(
+                        'Sucursaltt.id = Hojastipostrabajo.sucursale_id'
+                    )
+                )
+            ),
+            'conditions' => $condiciones
+            , 'fields' => array('DATE(Hojasproduccione.created) as fecha_produccion', 'Hojasproduccione.trabajo_id',
+                'Hojasproduccione.numero_hruta', 'Hojasproduccione.orden', 'Hojasproduccione.cliente', 'Hojasproduccione.cantidad'
+                , 'Hojasproduccione.descripcion', 'Hojasproduccione.formato', 'Hojasproduccione.caras', 'Hojasproduccione.costo', 'Hojasproduccione.tipo_trabajo', 'Hojasproduccione.la_sucursal','User.nombre')
+                )
+        );
+        /* debug($resultados);
+          exit; */
+        $this->set(compact('tipotrabajo', 'sucursal', 'resultados', 'fecha1', 'fecha2', 'tipoentrega','d_usuari','d_usuario'));
     }
 
     public function reporte_tipo_pago() {
