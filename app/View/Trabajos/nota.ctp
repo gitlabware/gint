@@ -25,7 +25,7 @@
                         </div>
                         <div class="col-md-3">
                             <label class="control-label">Forma de Pago</label>
-                            <?php echo $this->Form->select('Nota.tipo_pago', array('Credito' => 'Credito', 'Contado' => 'Contado'), array('class' => 'form-control', 'required', 'id' => 'idselectpago', 'onchange' => 'cambia_pago();')) ?>
+                            <?php echo $this->Form->select('Nota.tipo_pago', array('Credito' => 'Credito', 'Contado' => 'Contado','Credito Pagado' => 'Credito Pagado'), array('class' => 'form-control', 'required', 'id' => 'idselectpago', 'onchange' => 'cambia_pago();')) ?>
                         </div>
                         <?php if ($tipo == 'Nota de Remision'): ?>
                           <div class="col-md-3">

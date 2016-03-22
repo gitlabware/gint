@@ -12,7 +12,7 @@ class UsersController extends AppController {
     }
 
     public function index() {
-        $usuarios = $this->User->find('all');
+        $usuarios = $this->User->find('all',array('recursive' => 0));
         $this->set(compact('usuarios'));
     }
 

@@ -51,6 +51,11 @@ $categorias = $categoria->find('all');
                             <span class="text">Nuevo Trabajo</span>
                         </a>
                     </li>
+                    <li >
+                        <a href="<?php echo $this->Html->url(array('controller' => 'Trabajos', 'action' => 'creditos')); ?>">
+                            <span class="text">Listado de Creditos</span>
+                        </a>
+                    </li>
                 </ul>
                 <!--/ END 2nd Level Menu -->
             </li>
