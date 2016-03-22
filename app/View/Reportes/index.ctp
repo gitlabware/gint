@@ -45,11 +45,15 @@ echo $this->Html->css(array(
                 </div>
                 <div class="form-group">
                     <div class="row">
-                        <div class="col-md-12">
-                            <button type="submit" class="btn btn-primary col-md-12">GENERAR REPORTE</button>
+                        <div class="col-md-6">
+                            <button type="submit" class="btn btn-primary col-md-12" onclick="$('#id-n-tipo').val('reporte');">GENERAR REPORTE</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="submit" class="btn btn-success col-md-12" onclick="$('#id-n-tipo').val('excel');">GENERAR EXCEL</button>
                         </div>
                     </div>
                 </div>
+                <?php echo $this->Form->hidden('tipo',array('id' => 'id-n-tipo'));?> 
                 <?php echo $this->Form->end(); ?>
             </div>
         </div>
@@ -97,11 +101,15 @@ echo $this->Html->css(array(
                 </div>
                 <div class="form-group">
                     <div class="row">
-                        <div class="col-md-12">
-                            <button type="submit" class="btn btn-primary col-md-12">GENERAR REPORTE</button>
+                        <div class="col-md-6">
+                            <button type="submit" class="btn btn-primary col-md-12" onclick="$('#id-n-tipo-2').val('reporte');">GENERAR REPORTE</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="submit" class="btn btn-success col-md-12" onclick="$('#id-n-tipo-2').val('excel');">GENERAR EXCEL</button>
                         </div>
                     </div>
                 </div>
+                <?php echo $this->Form->hidden('tipo',array('id' => 'id-n-tipo-2'));?> 
                 <?php echo $this->Form->end(); ?>
             </div>
         </div>
