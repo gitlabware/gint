@@ -1,0 +1,28 @@
+/* 
+    Document   : imprimir
+    Created on : 31-05-2013, 07:04:10 PM
+    Author     : Cristiam
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+body{
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: small;
+}
+table {
+      border-collapse: collapse;
+}
+.tLight tbody td {
+      padding: 9px 16px;
+      vertical-align: middle;
+      color: #000;
+}
+
+.tLight tbody td, .tLight thead td {
+      border: 1px solid #000;
+/*      -webkit-border-top-left-radius: 2px;
+      -moz-border-radius-topleft: 2px;
+      -webkit-border-top-right-radius: 2px;
+      -moz-border-radius-topright: 2px;*/
+}

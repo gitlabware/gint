@@ -81,10 +81,10 @@
                         </span>
                         <?php //debug(strtoupper($tipo)); ?>
                         <?php if (strtoupper($tipo) === 'NOTA DE REMISION'): ?>
-                        <br>
-                        <span class="text-info">FACTURA: 
-                            <?php echo $nota['Nota']['numero_factura'] ?>
-                        </span>
+                            <br>
+                            <span class="text-info">FACTURA: 
+                                <?php echo $nota['Nota']['numero_factura'] ?>
+                            </span>
                         <?php endif; ?>
                     </td>
 
@@ -110,23 +110,23 @@
                 </tr>
                 <?php $total = 0.00; ?>
                 <?php foreach ($hproducciones as $pro): ?>
-                  <tr>
-                      <td><?php echo $pro['Hojasproduccione']['cantidad']; ?></td>
-                      <td>
-                          <?php
-                          if (!empty($pro['Hojasproduccione']['metrajeini']) && !empty($pro['Hojasproduccione']['metrajefin'])) {
-                            echo $pro['Hojasproduccione']['metrajeini'] . ' X ' . $pro['Hojasproduccione']['metrajefin'];
-                          } elseif ($pro['Hojasproduccione']['precio'] == 3) {
-                            echo 'Carta';
-                          } elseif ($pro['Hojasproduccione']['precio'] == 4) {
-                            echo 'Oficio';
-                          }
-                          ?>
-                      </td>
-                      <td><?php echo $pro['Hojasproduccione']['descripcion']; ?></td>
-                      <td><?php echo $pro['Hojasproduccione']['costo']; ?></td>
-                  </tr>
-                  <?php $total = $total + $pro['Hojasproduccione']['costo']; ?>
+                    <tr>
+                        <td><?php echo $pro['Hojasproduccione']['cantidad']; ?></td>
+                        <td>
+                            <?php
+                            if (!empty($pro['Hojasproduccione']['metrajeini']) && !empty($pro['Hojasproduccione']['metrajefin'])) {
+                                echo $pro['Hojasproduccione']['metrajeini'] . ' X ' . $pro['Hojasproduccione']['metrajefin'];
+                            } elseif ($pro['Hojasproduccione']['precio'] == 3) {
+                                echo 'Carta';
+                            } elseif ($pro['Hojasproduccione']['precio'] == 4) {
+                                echo 'Oficio';
+                            }
+                            ?>
+                        </td>
+                        <td><?php echo $pro['Hojasproduccione']['descripcion']; ?></td>
+                        <td><?php echo $pro['Hojasproduccione']['costo']; ?></td>
+                    </tr>
+                    <?php $total = $total + $pro['Hojasproduccione']['costo']; ?>
                 <?php endforeach; ?>
                 <tr>
                     <td class="text-danger">Forma pago: </td>
@@ -155,12 +155,17 @@
         <!-- START panel -->
         <div class="panel panel-primary">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="panel-body">
-                        <button type="button" onclick="window.print();" class="btn btn-inverse col-md-12"> <i class="ico-print2"> </i> IMPRIMIR</button>
+                        <button type="button" id="btnImprimir" class="btn btn-inverse col-md-12"> <i class="ico-print2"> </i> IMPRIMIR V.1</button>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
+                    <div class="panel-body">
+                        <button type="button" onclick="window.print();" class="btn btn-inverse col-md-12"> <i class="ico-print2"> </i> IMPRIMIR V.2</button>
+                    </div>
+                </div>
+                <div class="col-md-4">
                     <div class="panel-body">
                         <button type="button" onclick="window.location = '<?php echo $this->Html->url(array('action' => 'nota', $trabajo['Trabajo']['id'], $nota['Nota']['tipo'])); ?>';" class="btn btn-success col-md-12"> <i class="ico-pencil3"> </i> EDITAR</button>
                     </div>
@@ -169,3 +174,189 @@
         </div>
     </div>
 </div>
+
+
+<div style="display: none;">
+    <div id="areaImprimir">
+        <?php //echo $this->Html->image('generalInternational.jpg'); ?>
+        <?php
+        $idsucursal = $nota['Sucursale']['id'];
+        if ($idsucursal == 3) {
+            echo $this->Html->image('Finisheer.jpg');
+        }
+        if ($idsucursal == 2) {
+            echo $this->Html->image('cover-fine.jpg');
+        }
+        if ($idsucursal == 1) {
+            echo $this->Html->image('generalInternational.jpg');
+        }
+        ?> 
+        <table width="70%" style="height: 70px; float: right;" border="0" id="miTabla">
+            <tr>                 
+                <td rowspan="2" align="center" width="40%"><h2><?php echo strtoupper($tipo); ?></h2></td>
+                <td width="30%"><b>No. <?php echo $nota['Nota']['numero']; ?></b></td>
+            </tr>
+            <tr>
+                <td height="21">Fecha: 
+<?php
+//debug($hojaProduccion);
+$fechaHp = split(' ', $nota['Nota']['created']);
+//$tiempo = split(' ', $trabajo['Trabajo']['fecharegistro']);
+$fecha = split('-', $fechaHp[0]);
+//debug($fecha);
+echo $fecha[2] . '-' . $fecha[1] . '-' . $fecha[0];
+?>
+                </td>
+            </tr>
+        </table>            
+        <table width="100%" border="0">
+            <tr>
+                <td width="70%">Se&ntilde;ores: <?php echo $trabajo['Cliente']['nombre']; ?></td>
+                <td width="30%" align="left">
+<?php if (strtoupper($tipo) === 'NOTA DE REMISION'): ?>
+                        Factura: <?php echo $nota['Nota']['numero_factura']; ?>
+                    <?php endif; ?>
+
+                </td>
+            </tr>
+        </table>
+        <div style="height: 5px;"></div>            
+        <table width="100%" border="1">
+            <tr>                    
+                <th width="11%" scope="col">CANTIDAD</th>
+                <th width="10%" scope="col">FORMATO</th>
+                <th width="63%" scope="col">DETALLE</th>
+                <th width="10%" scope="col">PRECIO</th>
+            </tr>
+<?php $total = 0; ?>
+<?php foreach ($hproducciones as $pro): ?>
+                <tr>                    
+                    <td align="center">
+                        <div style="font-size: 8pt;">
+    <?php echo $pro['Hojasproduccione']['cantidad']; ?>
+                        </div>    
+                    </td>
+                    <td align="center">
+                        <div style="font-size: 8pt;">
+    <?php
+    if (!empty($pro['Hojasproduccione']['metrajeini']) && !empty($pro['Hojasproduccione']['metrajefin'])) {
+        echo $pro['Hojasproduccione']['metrajeini'] . ' X ' . $pro['Hojasproduccione']['metrajefin'];
+    } elseif ($pro['Hojasproduccione']['precio'] == 3) {
+        echo 'Carta';
+    } elseif ($pro['Hojasproduccione']['precio'] == 4) {
+        echo 'Oficio';
+    }
+    ?>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="font-size: 8pt;">
+    <?php echo $pro['Hojasproduccione']['descripcion']; ?> 
+                        </div>
+                    </td>
+                    <td align="right">
+                        <div style="font-size: 8pt;">
+    <?php
+    echo number_format($pro['Hojasproduccione']['costo'], 2);
+    ?>
+                        </div>
+                    </td>
+                </tr>
+    <?php $total = $total + $pro['Hojasproduccione']['costo']; ?>
+<?php endforeach; ?>
+        </table>
+        <table width="100%" border="0">
+            <tr>
+                <td width="85%" align="right">TOTAL &nbsp;&nbsp;Bs. &nbsp;</td>                    
+                <td width="15%" align="right">
+                    <div style="font-size: 8pt;">
+                        <b>
+<?php echo number_format($total, 2); ?> 
+                        </b>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+
+        <table width="30%" border="1">
+<?php if ($nota['Nota']['tipo_pago'] == 'Credito'): ?>
+                <tr>
+                    <td>
+                        <div style="font-size: 8pt;">
+                            <b>TIPO DE PAGO</b>
+                        </div>
+                    </td>                   
+                    <td align="right">
+                        <div style="font-size: 8pt;">
+                            Al Cr&eacute;dito
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="font-size: 8pt;">
+                            <b>TOTAL CANCELADO</b>
+                        </div>
+                    </td>
+                    <td align="right">
+                        <div style="font-size: 8pt;">
+    <?php echo number_format($nota['Nota']['total_pagado'], 2); ?> Bs.
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="font-size: 8pt;">
+                            <b>Saldo</b>
+                        </div>
+                    </td>
+                    <td align="right">
+                        <div style="font-size: 8pt;">
+<?php echo number_format( ($total-$nota['Nota']['total_pagado']), 2); ?> Bs. 
+                        </div>                           
+                    </td>
+                </tr>                    
+<?php else: ?>
+                <tr>
+                    <td>Tipo de Pago</td>
+                    <td>al Contado</td>
+                    <td style="text-align:right; padding-right: 20px">
+                        Saldo
+                    </td>
+                    <td style="text-align:right; padding-right: 20px">
+                        0 Bs.
+                    </td>
+                </tr>
+<?php endif; ?>
+        </table>   
+
+        <center><b>Entregado Por</b></center>
+<?php //fin de la tanbla;   ?>
+
+    </div>
+</div>
+
+<?php echo $this->Html->script(array('print')); ?>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#btnImprimir").click(function () {
+            //alert('dsadsa');
+            //console.log('click');
+            printElem({
+                leaveOpen: true,
+                printMode: 'popup',
+                overrideElementCSS: [
+                    '<?php echo $this->webroot; ?>css/imprimir.css',
+                    {href: '<?php echo $this->webroot; ?>css/imprimir.css', media: 'print'}]
+            });
+            //printElem({ overrideElementCSS: ['http://www.imprenta.com/css/printable.css'] });
+        });
+
+    });
+    function printElem(options) {
+        $('#areaImprimir').printElement(options);
+    }
+</script>

@@ -19,7 +19,12 @@ class TrabajosController extends AppController {
     }
 
     public function index() {
+        $sucursales = $this->Sucursale->find('list', array(
+            'fields' => array('Sucursale.nombre', 'Sucursale.nombre')
+        ));
+        //debug($sucursales);exit;
         if ($this->RequestHandler->responseType() == 'json') {
+
             $editar = '<button class="btn btn-info btn-xs" type="button" onclick="editart(' . "',Trabajo.id,'" . ')"><i class="icon ico-pencil"></i>Editar</button>';
             $imprimir = '<button class="btn btn-inverse btn-xs" type="button" onclick="imprimirt(' . "',Trabajo.id,'" . ')"><i class="icon ico-print"></i>Imprimir</button>';
             $produccion = '<button class="btn btn-success btn-xs" type="button" onclick="produccion(' . "',Trabajo.id,'" . ')"><i class="icon ico-cogs"></i>Produccion</button>';
@@ -38,7 +43,9 @@ class TrabajosController extends AppController {
             $this->DataTable->emptyEleget_usuarios_adminments = 1;
             $this->set('trabajos', $this->DataTable->getResponse());
             $this->set('_serialize', 'trabajos');
+
         }
+        $this->set(compact('sucursales'));
     }
 
     public function creditos() {
@@ -75,9 +82,9 @@ class TrabajosController extends AppController {
     }
 
     public function pagar_creditos() {
-        
-        if(empty($this->request->data['notas'])){
-            $this->Session->setFlash("Necesita seleccionar al menos una nota para pagar!!",'msgerror');
+
+        if (empty($this->request->data['notas'])) {
+            $this->Session->setFlash("Necesita seleccionar al menos una nota para pagar!!", 'msgerror');
             $this->redirect($this->referer());
         }
         foreach ($this->request->data['notas'] as $key => $no) {
@@ -389,6 +396,8 @@ class TrabajosController extends AppController {
         }
         $trabajo = $this->Trabajo->findByid($idTrabajo, null, NULL, 0);
         $hproducciones = $this->Hojasproduccione->findAllBytrabajo_id($idTrabajo, NULL, NULL, NULL, NULL, 0);
+        
+        //debug($hproducciones);exit;
         $this->set(compact('trabajo', 'nota', 'hproducciones', 'tipo'));
     }
 
