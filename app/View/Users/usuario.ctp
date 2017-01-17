@@ -42,7 +42,7 @@
         <div class="row">
             <div class="col-sm-6">
                 <label class="control-label">Tipo</label>
-                <?php echo $this->Form->select('role',array('Administrador' => 'Administrador','Empleado' => 'Empleado'),array('class' => 'form-control','required'));?>
+                <?php echo $this->Form->select('role',$roles,array('class' => 'form-control','required'));?>
             </div>
             <div class="col-sm-6">
                 <label class="control-label">Sucursal</label>
